@@ -13,7 +13,7 @@ import (
 type User struct {
 	Id 			uint 		`json:"id" form:"id" `
 	Email		string 		`json:"email" form:"email" `
-	FirstName 	string 		`json:firstname" form:"firstname" `
+	FirstName 	string 		`json:"firstname" form:"firstname" `
 	LastName 	string 		`json:"lastname" form:"lastname" `
 	Age			int			`json:"age" form:"age" `
 	Phone		string 		`json:"phonenum" form:"phonenum" `
@@ -22,16 +22,16 @@ type User struct {
 }
 
 func initDB() *gorm.DB {
+
 	dsn := "root:190901@tcp(127.0.0.1:3306)/training?charset=utf8mb4&parseTime=True&loc=Local"
 	var err error
 	DB, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if (err != nil) {
-		panic(err.Error())
+	panic(err.Error())
 	}
 	DB.AutoMigrate(&User{})
 	return DB
 }
-
 type Controller struct {
 	DB *gorm.DB
 }
@@ -40,44 +40,19 @@ func main() {
 	DB := initDB()
 	c := Controller{DB}
 	e := echo.New()
-	e.GET("/users", c.GetUserController)
-	e.POST("/user", c.CreateUser)
-	
-	e.Start(":8080")
-}
 
-func(ctrl *Controller) GetUserController(c echo.Context) error {
-	var users []User
+	userRepoInterface := userRepo.NewUserRepository(db)
+	userUseCaseInterface := userUsecase.NewUsecase(userRepoInterface, timeoutContext)
+	userControllerInterface := userController.NewUserController(userUseCaseInterface)
 
-	err := ctrl.DB.Find(&users).Error
-	fmt.Println(err)
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message" 	: "success",
-		"data"		: users,
-	})
-}
+	routesInit := routes.RouteControllerList{
+		UserController: *userControllerInterface,
 
-
-func (ctrl *Controller) CreateUser(c echo.Context) error {
-	// binding data
-	user := User{}
-	c.Bind(&user)
-
-	
-
-	err := ctrl.DB.Save(&user).Error
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"message" : err.Error(),
-		})
 	}
 
-	return c.JSON(http.StatusOK,map[string]interface{}{
-		"message": "success create user",
-		"user" : user,
-	})
+	routesInit.RouteRegister(e)
+	log.Fatal(e.Start(viper.GetString("server.address")))
 }
-
 
 
 
