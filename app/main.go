@@ -1,8 +1,7 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
+	"log"
 	"time"
 
 	"github.com/labstack/echo"
@@ -13,8 +12,7 @@ import (
 type User struct {
 	Id 			uint 		`json:"id" form:"id" `
 	Email		string 		`json:"email" form:"email" `
-	FirstName 	string 		`json:"firstname" form:"firstname" `
-	LastName 	string 		`json:"lastname" form:"lastname" `
+	Name 		string 		`json:"name" form:"name" `
 	Age			int			`json:"age" form:"age" `
 	Phone		string 		`json:"phonenum" form:"phonenum" `
 	CreatedAt 	time.Time   `json:"createdAt"`

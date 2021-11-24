@@ -4,6 +4,7 @@ go 1.17
 
 require (
 	github.com/labstack/echo v3.3.10+incompatible
+	github.com/labstack/echo/v4 v4.6.1
 	github.com/swaggo/swag v1.7.4
 	gorm.io/driver/mysql v1.2.0
 	gorm.io/gorm v1.22.3
@@ -13,6 +14,7 @@ require (
 	github.com/KyleBanks/depth v1.2.1 // indirect
 	github.com/PuerkitoBio/purell v1.1.1 // indirect
 	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 // indirect
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/go-openapi/jsonpointer v0.19.5 // indirect
 	github.com/go-openapi/jsonreference v0.19.6 // indirect
 	github.com/go-openapi/spec v0.20.4 // indirect

@@ -2,31 +2,44 @@ package users
 
 import (
 	"time"
+
+	"github.com/iskandardevan/book-library/business/users"
+	"gorm.io/gorm"
 )
 
+
 type User struct {
-	Id 			uint 		`json:"id" form:"id"`
-	Email		string 		`json:"email" form:"email"`
-	FirstName 	string 		`json:"firstname" form:"firstname"`
-	LastName 	string 		`json:"lastname" form:"lastname"`
-	Age			int			`json:"age" form:"age"`
-	Phone		string 		`json:"phonenum" form:"phonenum"`
-	CreatedAt 	time.Time   `json:"createdAt"`
-	UpdatedAt 	time.Time   `json:"updatedAt"`
+	Id 			uint 			`gorm:"primaryKey"`
+	Email		string			`gorm:"unique"`
+	Name 		string 		
+	Age			int			
+	Phone		string 
+	CreatedAt 	time.Time   
+	UpdatedAt 	time.Time   
+	DeletedAt	gorm.DeletedAt 	`gorm:"index"`
 }
 
+func (user *User) ToDomain() users.Domain {
+	return users.Domain{
+		Id 			:user.Id,
+		Email		:user.Email,
+		Name 		:user.Name,
+		Age			:user.Age,
+		Phone		:user.Phone,
+		CreatedAt 	:user.CreatedAt,
+		UpdatedAt 	:user.UpdatedAt,
+	}
+}
 
+func FromDomain(domain users.Domain) User  {
+	return User{
+		Id 			:domain.Id,
+		Email		:domain.Email,
+		Name 		:domain.Name,
+		Age			:domain.Age,
+		Phone		:domain.Phone,
+		CreatedAt 	:domain.CreatedAt,
+		UpdatedAt 	:domain.UpdatedAt,
+	}
 
-//func (user User) ToDomain() users.Domain {
-//	return users.Domain{
-//
-//
-//	}
-//}
-//
-//func FromDomain(domain users.Domain) User {
-//	return User{
-//
-//
-//	}
-//}
+}

@@ -7,7 +7,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type UserResponse struct {
+type UserRegister struct {
 	Id        uint           `json:"id"`
 	CreatedAt time.Time      `json:"createdAt"`
 	UpdatedAt time.Time      `json:"updatedAt"`
@@ -18,7 +18,7 @@ type UserResponse struct {
 	Token     string         `json:"token"`
 }
 
-func FromDomain(domain users.Domain) UserResponse {
+func FromUserRegister(domain users.Domain) UserResponse {
 	return UserResponse{
 		Id:        domain.Id,
 		CreatedAt: domain.CreatedAt,

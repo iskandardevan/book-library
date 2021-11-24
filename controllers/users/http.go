@@ -1,43 +1,40 @@
-package controllers
+package users
 
-import
+import (
+	"net/http"
+
+	"github.com/iskandardevan/book-library/business/users"
+	"github.com/iskandardevan/book-library/controllers"
+	"github.com/iskandardevan/book-library/controllers/users/request"
+	"github.com/iskandardevan/book-library/controllers/users/response"
+	"github.com/labstack/echo"
+)
+
 
 type UserController struct {
-	usecase users.UserUsecaseInterface
-}
-func(ctrl *Controller) GetUserController(c echo.Context) error {
-	var users []User
-
-	err := ctrl.DB.Find(&users).Error
-	fmt.Println(err)
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"message" 	: "success",
-		"data"		: users,
-	})
+	userUseCase users.UserUsecaseInterface
 }
 
-func NewUserController(uc users.UserUsecaseInterface) *UserController {
+func NewUserController(UserUseCase users.UserUsecaseInterface) *UserController{
 	return &UserController{
-		usecase: uc,
+		userUseCase: UserUseCase,
 	}
 }
 
-func (ctrl *Controller) CreateUserController(c echo.Context) error {
-	// binding data
-	user := User{}
-	c.Bind(&user)
-
-
-
-	err := ctrl.DB.Save(&user).Error
+func (userController *UserController) RegisterUser (c echo.Context) error {
+	req := request.CreateUser{}
+	var err error
+	err = c.Bind(&req)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"message" : err.Error(),
-		})
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
 
-	return c.JSON(http.StatusOK,map[string]interface{}{
-		"message": "success create user",
-		"user" : user,
-	})
+	ctx := c.Request().Context()
+	var data users.Domain
+	data, err = userController.userUseCase.RegisterUser(ctx, *req.ToDomain())
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+	return controllers.NewSuccesResponse(c, response.FromUserRegister(data))
+
 }
