@@ -1,0 +1,26 @@
+name: "running unit test, build docker image"
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  unit-test:
+    name: "unit-test"
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v2
+      - name: setup g
+        uses:  actions/setup-go@v2
+        with:
+          go-version: 1.17.2
+      - name: "running unit test"
+      # run: go test ./... -cover
+  build-push-docker:
+    name: "build image and push registry dockerhub"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: build image
+        run: docker build -t iskandev/book-library
+      # - name: 

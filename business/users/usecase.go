@@ -13,7 +13,7 @@ type UserUseCase struct {
 
 
 
-func NewUsecase(userRepo UserRepoInterface, ctx time.Duration) *UserUseCase {
+func NewUseCase(userRepo UserRepoInterface, ctx time.Duration) *UserUseCase {
 	return &UserUseCase{
 		repo: userRepo,
 		ctx:	ctx,

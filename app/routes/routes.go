@@ -1,15 +1,22 @@
 package routes
 
 import (
-	"github.com/labstack/echo"
+	"github.com/iskandardevan/book-library/controllers/users"
+	"github.com/labstack/echo/v4"
 )
 
+type RouteControllerList struct {
+	// JWTMiddleware middlewares.ConfigJWT
+	UserController users.UserController
+}
 
-func RouteRegister(e *echo.Echo) {
-	users := e.Group("users")
-	users.GET("/users",)
-	m.
-	users.POST("", ctrlList.UserController.Register)
-	users.POST("/login", ctrlList.UserController.Login)
+func (ctrl *RouteControllerList) RouteRegister(e *echo.Echo) {
+	e.POST("users/register", ctrl.UserController.RegisterUser)
+	// e.GET("users", ctrl.UserController.GetAllUsers)
+	// users := e.Group("users")
+	// users.GET("/users",)
+	// users.POST("", ctrlList.UserController.Register)
+	// users.POST("/login", ctrlList.UserController.Login)
 	
 }
+

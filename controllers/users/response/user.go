@@ -16,6 +16,12 @@ type UserResponse struct {
 	Name      string         `json:"name"`
 	Password  string         `json:"password"`
 	Token     string         `json:"token"`
+
+}
+
+type JWTResponse struct {
+	Token string
+	User interface{}
 }
 
 func FromDomain(domain users.Domain) UserResponse {
@@ -29,4 +35,12 @@ func FromDomain(domain users.Domain) UserResponse {
 		Password:  domain.Password,
 		Token:     domain.Token,
 	}
+}
+
+func GetAllUsers(domain []users.Domain) []UserResponse {
+	var GetAllUsers []UserResponse
+	for _, val := range domain{
+		GetAllUsers = append(GetAllUsers, FromDomain(val))
+	}
+	return GetAllUsers 
 }

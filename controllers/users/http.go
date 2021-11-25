@@ -7,7 +7,7 @@ import (
 	"github.com/iskandardevan/book-library/controllers"
 	"github.com/iskandardevan/book-library/controllers/users/request"
 	"github.com/iskandardevan/book-library/controllers/users/response"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 
@@ -22,7 +22,7 @@ func NewUserController(UserUseCase users.UserUsecaseInterface) *UserController{
 }
 
 func (userController *UserController) RegisterUser (c echo.Context) error {
-	req := request.CreateUser{}
+	req := request.RegisterUser{}
 	var err error
 	err = c.Bind(&req)
 	if err != nil {
@@ -38,3 +38,21 @@ func (userController *UserController) RegisterUser (c echo.Context) error {
 	return controllers.NewSuccesResponse(c, response.FromUserRegister(data))
 
 }
+
+func (userController *UserController) GetAllUsers (c echo.Context) error {
+	req := c.Request().Context()
+	data, err := userController.userUseCase.GetAllUsers(req )
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+	return controllers.NewSuccesResponse(c, response.GetAllUsers(data))
+
+}
+
+// func (userController *UserController) UpdateUser (c echo.Context) error {
+	
+// }
+
+// func (userController *UserController) DeleteUser (c echo.Context) error {
+	
+// }
