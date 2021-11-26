@@ -13,7 +13,9 @@ type User struct {
 	Email		string			`gorm:"unique"`
 	Name 		string 		
 	Age			int			
-	Phone		string 
+	Phone		string
+	Password	string
+	Token		string
 	CreatedAt 	time.Time   
 	UpdatedAt 	time.Time   
 	DeletedAt	gorm.DeletedAt 	`gorm:"index"`
@@ -26,6 +28,8 @@ func (user *User) ToDomain() users.Domain {
 		Name 		:user.Name,
 		Age			:user.Age,
 		Phone		:user.Phone,
+		Password	:user.Password,
+		Token		:user.Token,
 		CreatedAt 	:user.CreatedAt,
 		UpdatedAt 	:user.UpdatedAt,
 	}
@@ -38,6 +42,8 @@ func FromDomain(domain users.Domain) User  {
 		Name 		:domain.Name,
 		Age			:domain.Age,
 		Phone		:domain.Phone,
+		Password	:domain.Password,
+		Token		:domain.Token,
 		CreatedAt 	:domain.CreatedAt,
 		UpdatedAt 	:domain.UpdatedAt,
 	}

@@ -14,6 +14,8 @@ type UserResponse struct {
 	DeletedAt gorm.DeletedAt `json:"deletedAt"`
 	Email     string         `json:"email"`
 	Name      string         `json:"name"`
+	Age			int 		`json:"age"`
+	Phone	string 			`json:"phone"`
 	Password  string         `json:"password"`
 	Token     string         `json:"token"`
 
@@ -32,6 +34,8 @@ func FromDomain(domain users.Domain) UserResponse {
 		DeletedAt: domain.DeletedAt,
 		Name:      domain.Name,
 		Email:     domain.Email,
+		Age: domain.Age,
+		Phone: domain.Phone,
 		Password:  domain.Password,
 		Token:     domain.Token,
 	}

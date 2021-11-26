@@ -4,15 +4,15 @@ import (
 	"log"
 	"time"
 
+	"github.com/iskandardevan/book-library/app/middlewares"
 	"github.com/iskandardevan/book-library/app/routes"
-	_userusecase "github.com/iskandardevan/book-library/business/users"
-	_usercontroller "github.com/iskandardevan/book-library/controllers/users"
+	userUseCase "github.com/iskandardevan/book-library/business/users"
+	userController "github.com/iskandardevan/book-library/controllers/users"
 	"github.com/iskandardevan/book-library/driver/mysql"
-	_userrepo "github.com/iskandardevan/book-library/driver/repository/users"
+	userRepo "github.com/iskandardevan/book-library/driver/repository/users"
 	"github.com/labstack/echo/v4"
 	"github.com/spf13/viper"
 	"gorm.io/gorm"
-	// _userusecase "github.com/iskandardevan/book-library/business/users"
 )
 
 
@@ -29,7 +29,7 @@ func init(){
 }
 
 func DBMigrate(DB *gorm.DB) {
-	DB.AutoMigrate(&_userrepo.User{})
+	DB.AutoMigrate(&userRepo.User{})
 }
 
 func main(){
@@ -50,9 +50,9 @@ func main(){
 	e := echo.New()
 
 	
-	UserRepoInterface := _userrepo.NewUserRepo(DB)
-	userUseCaseInterface := _userusecase.NewUseCase(UserRepoInterface, timeoutContext)
-	userUseControllerInterface := _usercontroller.NewUserController(userUseCaseInterface)
+	userRepoInterface := userRepo.NewUserRepo(DB)
+	userUseCaseInterface := userUseCase.NewUseCase(userRepoInterface, timeoutContext, &middlewares.ConfigJWT{})
+	userUseControllerInterface := userController.NewUserController(userUseCaseInterface)
 
 	routesInit := routes.RouteControllerList{
 		UserController: *userUseControllerInterface,

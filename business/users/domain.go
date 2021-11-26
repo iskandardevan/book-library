@@ -8,7 +8,7 @@ import (
 )
 
 type Domain struct {
-	Id        uint
+	Id        uint		`gorm:"primaryKey"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt `gorm:"index"`
@@ -21,16 +21,16 @@ type Domain struct {
 }
 
 type UserUsecaseInterface interface {
-	Login(domain Domain, ctx context.Context) (Domain, error)
-	GetAllUsers(ctx context.Context) ([]Domain, error)
+	LoginUser(email string, password string, ctx context.Context) (Domain, string, error)
+	// GetAllUsers(ctx context.Context) ([]Domain, error)
 	RegisterUser(ctx context.Context, domain Domain) (Domain, error)
 	
 }
 
 type UserRepoInterface interface {
-	Login(domain Domain, ctx context.Context) (Domain, error)
-	GetAllUsers(ctx context.Context) ([]Domain, error)
-	RegisterUser(ctx context.Context, domain Domain) (Domain, error)
+	
+	// GetAllUsers(ctx context.Context) ([]Domain, error)
+	RegisterUser(ctx context.Context, domain *Domain) (Domain, error)
 	GetEmail(ctx context.Context, email string) (Domain, error)
 }
 

@@ -22,11 +22,11 @@ func NewUserController(UserUseCase users.UserUsecaseInterface) *UserController{
 }
 
 func (userController *UserController) RegisterUser (c echo.Context) error {
-	req := request.RegisterUser{}
+	req := request.RegisterUserRequest{}
 	var err error
 	err = c.Bind(&req)
 	if err != nil {
-		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
 	}
 
 	ctx := c.Request().Context()
@@ -39,20 +39,23 @@ func (userController *UserController) RegisterUser (c echo.Context) error {
 
 }
 
-func (userController *UserController) GetAllUsers (c echo.Context) error {
-	req := c.Request().Context()
-	data, err := userController.userUseCase.GetAllUsers(req )
+
+func (userController *UserController) LoginUser (c echo.Context) error {
+	var login users.Domain
+	var err error
+	var token string
+	ctx := c.Request().Context()
+
+	req := request.UserLoginRequest{}
+	err = c.Bind(&req)
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
+	}
+
+	login, token, err = userController.userUseCase.LoginUser(req.Email, req.Password, ctx)
+
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
-	return controllers.NewSuccesResponse(c, response.GetAllUsers(data))
-
+	return controllers.NewSuccesResponse(c, response.UserLogin(login, token))
 }
-
-// func (userController *UserController) UpdateUser (c echo.Context) error {
-	
-// }
-
-// func (userController *UserController) DeleteUser (c echo.Context) error {
-	
-// }

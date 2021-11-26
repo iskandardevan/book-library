@@ -8,25 +8,27 @@ import (
 )
 
 type userRepo struct {
-	db *gorm.DB
+	DB *gorm.DB
 }
 
-func NewUserRepo(db *gorm.DB) *userRepo {
-	return &userRepo{db: db}
+func NewUserRepo(DB *gorm.DB) *userRepo {
+	return &userRepo{DB: DB,}
 }
 
 func (Repo *userRepo) RegisterUser(ctx context.Context, domain *users.Domain) (users.Domain, error) {
-	user := User{
-		Id 			:domain.Id,
-		Email		:domain.Email,
-		Name 		:domain.Name,
-		Age			:domain.Age,
-		Phone		:domain.Phone,
-	}
-	err := Repo.db.Create(&user)
+	user := FromDomain(*domain)
+	err := Repo.DB.Create(&user)
 	if err.Error != nil {
 		return users.Domain{}, err.Error
 	}
 	return user.ToDomain(), nil
 } 
 
+func (Repo *userRepo) GetEmail(ctx context.Context, email string) (users.Domain, error){
+	var user User
+	err := Repo.DB.Find(&user, "email=?", email)
+	if err.Error != nil {
+		return users.Domain{}, err.Error
+	}
+	return user.ToDomain(), nil
+}
