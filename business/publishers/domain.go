@@ -24,5 +24,5 @@ type PublishersUsecaseInterface interface {
 }
 
 type PublishersRepoInterface interface {
-	AddPublisher(ctx context.Context, domain *Domain) (Domain, error)
+	RegisterPublisher(ctx context.Context, domain *Domain) (Domain, error)
 }

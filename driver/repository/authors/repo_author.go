@@ -11,7 +11,7 @@ type authorRepo struct {
 	DB *gorm.DB
 }
 
-func NewAuthorRepo(DB *gorm.DB) *authorRepo {
+func NewAuthorRepo(DB *gorm.DB) authors.AuthorRepoInterface {
 	return &authorRepo{DB: DB}
 }
 
