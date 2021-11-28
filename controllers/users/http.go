@@ -10,7 +10,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-
 type UserController struct {
 	userUseCase users.UserUsecaseInterface
 }
@@ -59,3 +58,4 @@ func (userController *UserController) LoginUser (c echo.Context) error {
 	}
 	return controllers.NewSuccesResponse(c, response.UserLogin(login, token))
 }
+

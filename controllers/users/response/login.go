@@ -7,7 +7,7 @@ func UserLogin(domain users.Domain, token string) JWTResponse{
 		Id:        domain.Id,
 		Name:      domain.Name,
 		Email:     domain.Email,
-		Password:  domain.Password,
+		// Password:  domain.Password,
 		Token:     domain.Token,
 	}
 

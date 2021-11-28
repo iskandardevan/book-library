@@ -8,16 +8,16 @@ import (
 )
 
 type UserResponse struct {
-	Id        uint           `json:"id"`
-	CreatedAt time.Time      `json:"createdAt"`
-	UpdatedAt time.Time      `json:"updatedAt"`
-	DeletedAt gorm.DeletedAt `json:"deletedAt"`
-	Email     string         `json:"email"`
-	Name      string         `json:"name"`
-	Age			int 		`json:"age"`
-	Phone	string 			`json:"phone"`
-	Password  string         `json:"password"`
-	Token     string         `json:"token"`
+	Id        	uint           `json:"id"`
+	CreatedAt 	time.Time      `json:"createdAt"`
+	UpdatedAt 	time.Time      `json:"updatedAt"`
+	DeletedAt 	gorm.DeletedAt `json:"deletedAt"`
+	Email     	string         `json:"email"`
+	Name      	string         `json:"name"`
+	Age			int 			`json:"age"`
+	Phone		string 			`json:"phone"`
+	Password  	string         `json:"password"`
+	Token     	string         `json:"token"`
 
 }
 

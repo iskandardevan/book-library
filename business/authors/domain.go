@@ -1,16 +1,17 @@
 package authors
 
 import (
+	"context"
 	"time"
 
 	"gorm.io/gorm"
 )
 
 type Domain struct {
-	Id        	uint
+	Id        	uint			`gorm:"primaryKey"`
 	CreatedAt 	time.Time
 	UpdatedAt 	time.Time
-	DeletedAt 	gorm.DeletedAt `gorm:"index"`
+	DeletedAt 	gorm.DeletedAt 	`gorm:"index"`
 	Email     	string
 	Name		string
 	Age			int
@@ -18,10 +19,11 @@ type Domain struct {
 	Address     string
 }
 
-type AuthorsUsecaseInterface interface {
-	
+type AuthorUsecaseInterface interface {
+	AddAuthor(ctx context.Context, domain Domain) (Domain, error)
 }
 
-type AuthorsRepoInterface interface {
-	
+type AuthorRepoInterface interface {
+	AddAuthor(ctx context.Context, domain *Domain) (Domain, error)
 }
+

@@ -8,11 +8,11 @@ import (
 )
 
 type authorRepo struct {
-	db *gorm.DB
+	DB *gorm.DB
 }
 
-func NewAuthorRepo(db *gorm.DB) *authorRepo {
-	return &authorRepo{db: db}
+func NewAuthorRepo(DB *gorm.DB) *authorRepo {
+	return &authorRepo{DB: DB}
 }
 
 func (Repo *authorRepo) RegisterAuthor(ctx context.Context, domain *authors.Domain) (authors.Domain, error) {
@@ -24,7 +24,7 @@ func (Repo *authorRepo) RegisterAuthor(ctx context.Context, domain *authors.Doma
 		Phone		:domain.Phone,
 		Address		:domain.Address,
 	}
-	err := Repo.db.Create(&author)
+	err := Repo.DB.Create(&author)
 	if err.Error != nil {
 		return authors.Domain{}, err.Error
 	}

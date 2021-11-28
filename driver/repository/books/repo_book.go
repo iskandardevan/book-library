@@ -20,8 +20,8 @@ func (Repo *bookRepo) RegisterBook(ctx context.Context, domain *books.Domain) (b
 		Id:               domain.Id,
 		Title:            domain.Title,
 		Edition:          domain.Edition,
-		Author:           domain.Author,
-		Publisher:        domain.Publisher,
+		Author_ID			:domain.Author_ID,
+		Publisher_ID		:domain.Publisher_ID,
 		Publication_Year: domain.Publication_Year,
 	}
 	err := Repo.db.Create(&book)
