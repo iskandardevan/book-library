@@ -1,24 +1,9 @@
 package response
 
 import (
-	"time"
-
 	"github.com/iskandardevan/book-library/business/users"
-	"gorm.io/gorm"
 )
 
-type UserRegister struct {
-	Id        	uint           	`json:"id"`
-	CreatedAt 	time.Time      	`json:"createdAt"`
-	UpdatedAt 	time.Time      	`json:"updatedAt"`
-	DeletedAt 	gorm.DeletedAt 	`json:"deletedAt"`
-	Email     	string         	`json:"email"`
-	Name      	string         	`json:"name"`
-	Age			int 			`json:"age"`
-	Phone		string 			`json:"phone"`
-	Password  	string         	`json:"password"`
-	Token     	string         	`json:"token"`
-}
 
 func FromUserRegister(domain users.Domain) UserResponse {
 	return UserResponse{

@@ -24,6 +24,8 @@ func (ctrl *RouteControllerList) RouteRegister(e *echo.Echo) {
 	e.POST("author/add", ctrl.AuthorController.AddAuthor)
 	e.POST("publisher/add", ctrl.PublisherController.AddPublisher)
 	e.POST("book/add", ctrl.BookController.AddBook)
+
+	e.GET("user/id", ctrl.UserController.GetByID)
 	// e.GET("users", ctrl.UserController.GetAllUsers)
 	
 	

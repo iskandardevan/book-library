@@ -59,3 +59,22 @@ func (userController *UserController) LoginUser (c echo.Context) error {
 	return controllers.NewSuccesResponse(c, response.UserLogin(login, token))
 }
 
+func (userController *UserController) GetByID (c echo.Context) error{
+	var getid users.Domain
+	var err error
+	ctx := c.Request().Context()
+	req := request.GetByID{}
+	err = c.Bind(&req)
+
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
+	}
+
+	getid, err = userController.userUseCase.GetByID(req.Id, ctx)
+
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+	return controllers.NewSuccesResponse(c, response.GetByID(getid))
+
+}

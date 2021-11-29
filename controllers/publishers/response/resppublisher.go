@@ -14,7 +14,6 @@ type PublisherResponse struct {
 	DeletedAt gorm.DeletedAt `json:"deletedAt"`
 	Email     string         `json:"email"`
 	Name      string         `json:"name"`
-	Age       int            `json:"age"`
 	Phone     string         `json:"phone"`
 	Address   string         `json:"address"`
 }
@@ -24,7 +23,6 @@ func FromDomainPublisher(domain publishers.Domain) PublisherResponse {
 		Id:        domain.Id,
 		Email:     domain.Email,
 		Name:      domain.Name,
-		Age:       domain.Age,
 		Phone:     domain.Phone,
 		Address:   domain.Address,
 		CreatedAt: domain.CreatedAt,

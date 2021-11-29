@@ -28,7 +28,7 @@ func (usecase *BookUseCase) AddBook(ctx context.Context, domain Domain) (Domain,
 	// if domain.Publication_Year == 0 {
 	// 	return Domain{}, errors.New("umur harus di isi")
 	// }
-	book, err := usecase.repo.AddBook(ctx, &domain)
+	book, err := usecase.repo.RegisterBook(ctx, &domain)
 	if err != nil {
 		return Domain{}, err
 	}

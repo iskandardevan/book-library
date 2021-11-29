@@ -32,3 +32,12 @@ func (Repo *userRepo) GetEmail(ctx context.Context, email string) (users.Domain,
 	}
 	return user.ToDomain(), nil
 }
+
+func (Repo *userRepo) GetByID(id uint) (users.Domain, error){
+	var user User
+	err := Repo.DB.Find(&user, "id=?", id)
+	if err.Error != nil {
+		return users.Domain{}, err.Error
+	}
+	return user.ToDomain(), nil
+}

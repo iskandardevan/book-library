@@ -14,7 +14,6 @@ type Domain struct {
 	DeletedAt 	gorm.DeletedAt 	`gorm:"index"`
 	Email     	string
 	Name		string
-	Age			int
 	Phone		string
 	Address     string
 }
@@ -24,5 +23,5 @@ type PublishersUsecaseInterface interface {
 }
 
 type PublishersRepoInterface interface {
-	AddPublisher(ctx context.Context, domain *Domain) (Domain, error)
+	RegisterPublisher(ctx context.Context, domain *Domain) (Domain, error)
 }

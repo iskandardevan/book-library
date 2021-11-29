@@ -22,14 +22,13 @@ type Domain struct {
 
 type UserUsecaseInterface interface {
 	LoginUser(email string, password string, ctx context.Context) (Domain, string, error)
-	// GetAllUsers(ctx context.Context) ([]Domain, error)
+	GetByID(id uint, ctx context.Context) (Domain, error)
 	RegisterUser(ctx context.Context, domain Domain) (Domain, error)
 	
 }
 
 type UserRepoInterface interface {
-	
-	// GetAllUsers(ctx context.Context) ([]Domain, error)
+	GetByID(id uint) (Domain, error)
 	RegisterUser(ctx context.Context, domain *Domain) (Domain, error)
 	GetEmail(ctx context.Context, email string) (Domain, error)
 }

@@ -20,7 +20,7 @@ type Domain struct {
 	Author				authors.Domain
 	Publisher_ID		uint
 	Publisher			publishers.Domain
-	Publication_Year 	time.Time
+	Publication_Year 	string
 }
 
 type BooksUsecaseInterface interface{
@@ -28,5 +28,5 @@ type BooksUsecaseInterface interface{
 }
 
 type BooksRepoInterface interface {
-	AddBook(ctx context.Context, domain *Domain) (Domain, error)
+	RegisterBook(ctx context.Context, domain *Domain) (Domain, error)
 }

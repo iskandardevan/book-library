@@ -20,7 +20,7 @@ import (
 	"github.com/iskandardevan/book-library/driver/mysql"
 	authorRepo "github.com/iskandardevan/book-library/driver/repository/authors"
 	bookRepo "github.com/iskandardevan/book-library/driver/repository/books"
-	publisherRepo "github.com/iskandardevan/book-library/driver/repository/publisher"
+	publisherRepo "github.com/iskandardevan/book-library/driver/repository/publishers"
 	userRepo "github.com/iskandardevan/book-library/driver/repository/users"
 	"github.com/labstack/echo/v4"
 	"github.com/spf13/viper"
@@ -55,10 +55,7 @@ func main(){
 		DB_Port:     viper.GetString("database.port"),
 		DB_Database: viper.GetString("database.name"),
 	}
-	// JWT := middlewares.ConfigJWT{
-	// 	SecretJWT:       viper.GetString("jwt.secret"),
-	// 	ExpiresDuration: viper.GetInt("jwt.expired"),
-	// }
+	
 	DB := ConfigDB.InitialDB()
 	DBMigrate(DB)
 	timeoutContext := time.Duration(viper.GetInt("context.timeout")) * time.Second
@@ -71,15 +68,15 @@ func main(){
 
 	authorRepoInterface := authorRepo.NewAuthorRepo(DB)
 	authorUseCaseInterface := authorUseCase.NewUseCase(authorRepoInterface, timeoutContext)
-	authorUseControllerInterface := authorController.NewauthorController(authorUseCaseInterface)
+	authorUseControllerInterface := authorController.NewAuthorController(authorUseCaseInterface)
 
 	publisherRepoInterface := publisherRepo.NewPublisherRepo(DB)
 	publisherUseCaseInterface := publisherUseCase.NewUseCase(publisherRepoInterface , timeoutContext)
-	publisherUseControllerInterface := publisherController.NewpublisherController(publisherUseCaseInterface)
+	publisherUseControllerInterface := publisherController.NewPublisherController(publisherUseCaseInterface)
 
 	bookRepoInterface := bookRepo.NewBookRepo(DB)
 	bookUseCaseInterface := bookUseCase.NewUseCase(bookRepoInterface , timeoutContext )
-	bookUseControllerInterface := bookController.NewbookController(bookUseCaseInterface)
+	bookUseControllerInterface := bookController.NewBookController(bookUseCaseInterface)
 
 
 	routesInit := routes.RouteControllerList{

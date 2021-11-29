@@ -13,7 +13,7 @@ type BookResponse struct {
 	Edition          int            `json:"edition"`
 	Author_ID        uint           `json:"author_id"`
 	Publisher_ID     uint           `json:"publisher_id"`
-	Publication_Year time.Time      `json:"publication_year"`
+	Publication_Year string     `json:"publication_year"`
 	CreatedAt        time.Time      `json:"createdAt"`
 	UpdatedAt        time.Time      `json:"updatedAt"`
 	DeletedAt        gorm.DeletedAt `json:"deletedAt"`

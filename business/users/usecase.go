@@ -68,7 +68,15 @@ func (usecase *UserUseCase) LoginUser(email string, password string, ctx context
 		log.Println(errToken)
 	}
 	if token == "" {
-		return Domain{}, "", errors.New("Token kosong bre")
+		return Domain{}, "", errors.New("token kosong bre")
 	}
 	return user, token, nil
+}
+
+func (usecase *UserUseCase) GetByID(id uint) (Domain, error){
+	user, err := usecase.repo.GetByID(id)
+	if err != nil {
+		return Domain{}, errors.New("tidak ada user dengan ID tersebut")
+	}
+	return user, nil
 }
