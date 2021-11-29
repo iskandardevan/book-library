@@ -25,9 +25,6 @@ func (usecase *PublisherUseCase) AddPublisher(ctx context.Context, domain Domain
 	if domain.Name == "" {
 		return Domain{}, errors.New("nama harus di isi")
 	}
-	if domain.Age == 0 {
-		return Domain{}, errors.New("umur harus di isi")
-	}
 	if domain.Phone == "" {
 		return Domain{}, errors.New("nomer hp harus di isi")
 	}

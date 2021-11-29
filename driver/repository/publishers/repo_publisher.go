@@ -20,7 +20,6 @@ func (Repo *publisherRepo) RegisterPublisher(ctx context.Context, domain *publis
 		Id 			:domain.Id,
 		Email		:domain.Email,
 		Name 		:domain.Name,
-		Age			:domain.Age,
 		Phone		:domain.Phone,
 		Address		:domain.Address,
 	}

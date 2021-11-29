@@ -14,7 +14,6 @@ type Domain struct {
 	DeletedAt 	gorm.DeletedAt 	`gorm:"index"`
 	Email     	string
 	Name		string
-	Age			int
 	Phone		string
 	Address     string
 }

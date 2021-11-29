@@ -17,7 +17,7 @@ type Book struct {
 	Author			 authors.Author				`gorm:"constraint:OnUpdate:NO ACTION,OnDelete:CASCADE;"`
 	Publisher_ID	 uint						`gorm:"foreignKey"`
 	Publisher		 publishers.Publisher		`gorm:"constraint:OnUpdate:NO ACTION,OnDelete:CASCADE;"`
-	Publication_Year time.Time
+	Publication_Year string
 	CreatedAt        time.Time
 	UpdatedAt        time.Time
 	DeletedAt        gorm.DeletedAt 			`gorm:"index"`
