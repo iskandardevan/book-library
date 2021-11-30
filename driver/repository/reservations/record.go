@@ -4,13 +4,17 @@ import (
 	"time"
 
 	"github.com/iskandardevan/book-library/business/reservations"
+	"github.com/iskandardevan/book-library/driver/repository/books"
+	"github.com/iskandardevan/book-library/driver/repository/users"
 	"gorm.io/gorm"
 )
 
 type Reservation struct {
-	Id        uint `gorm:"primaryKey"`
-	Book      string
-	User      string `gorm:"unique"`
+	Id        uint 			`gorm:"primaryKey"`
+	Book      books.Book	`gorm:"constraint:OnUpdate:NO ACTION,OnDelete:CASCADE;"`
+	Book_ID		uint	
+	User      users.User 	`gorm:"constraint:OnUpdate:NO ACTION,OnDelete:CASCADE;"`
+	User_ID		uint
 	Start     time.Time
 	End       time.Time
 	CreatedAt time.Time
@@ -21,8 +25,8 @@ type Reservation struct {
 func (reservation *Reservation) ToDomain() reservations.Domain {
 	return reservations.Domain{
 		Id 			:reservation.Id,
-		Book     	:reservation.Book,
-		User      	:reservation.User,
+		Book_ID     :reservation.Book_ID,
+		User_ID     :reservation.User_ID,
 		Start     	:reservation.Start,
 		End       	:reservation.End,
 		CreatedAt 	:reservation.CreatedAt,
@@ -33,8 +37,8 @@ func (reservation *Reservation) ToDomain() reservations.Domain {
 func FromDomain(domain reservations.Domain) Reservation  {
 	return Reservation{
 		Id 			:domain.Id,
-		Book     	:domain.Book,
-		User      	:domain.User,
+		Book_ID     :domain.Book_ID,
+		User_ID   	:domain.User_ID,
 		Start     	:domain.Start,
 		End       	:domain.End,
 		CreatedAt 	:domain.CreatedAt,

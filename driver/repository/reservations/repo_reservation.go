@@ -15,13 +15,13 @@ func NewReservationRepo(db *gorm.DB) *reservationRepo {
 	return &reservationRepo{db: db}
 }
 
-func (Repo *reservationRepo) Registerreservation(ctx context.Context, domain *reservations.Domain) (reservations.Domain, error) {
+func (Repo *reservationRepo) AddReservation(ctx context.Context, domain *reservations.Domain) (reservations.Domain, error) {
 	reservation := Reservation{
-		Id:    domain.Id,
-		Book:  domain.Book,
-		User:  domain.User,
-		Start: domain.Start,
-		End:   domain.End,
+		Id:    				domain.Id,
+		Book_ID:  			domain.Book_ID,
+		User_ID:  			domain.User_ID,
+		Start:				domain.Start,
+		End:   				domain.End,
 	}
 	err := Repo.db.Create(&reservation)
 	if err.Error != nil {
