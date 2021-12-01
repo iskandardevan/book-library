@@ -15,7 +15,7 @@ func NewPublisherRepo(db *gorm.DB) *publisherRepo {
 	return &publisherRepo{db: db}
 }
 
-func (Repo *publisherRepo) RegisterPublisher(ctx context.Context, domain *publishers.Domain) (publishers.Domain, error) {
+func (Repo *publisherRepo) AddPublisher(ctx context.Context, domain publishers.Domain) (publishers.Domain, error) {
 	publisher := Publisher{
 		Id 			:domain.Id,
 		Email		:domain.Email,

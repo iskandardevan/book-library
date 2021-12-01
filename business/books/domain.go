@@ -29,6 +29,6 @@ type BooksUsecaseInterface interface{
 }
 
 type BooksRepoInterface interface {
-	RegisterBook(ctx context.Context, domain *Domain) (Domain, error)
+	AddBook(ctx context.Context, domain Domain) (Domain, error)
 	GetAllBooks(ctx context.Context) ([]Domain, error)
 }

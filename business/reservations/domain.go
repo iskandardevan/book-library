@@ -24,10 +24,10 @@ type Domain struct {
 
 type ReservationUsecaseInterface interface {
 	AddReservation(ctx context.Context, domain Domain) (Domain, error)
-	
+	GetAllReservations(ctx context.Context) ([]Domain, error)
 }
 
 type ReservationRepoInterface interface {
-	AddReservation(ctx context.Context, domain *Domain) (Domain, error)
-	
+	AddReservation(ctx context.Context, domain Domain) (Domain, error)
+	GetAllReservations(ctx context.Context) ([]Domain, error)
 }

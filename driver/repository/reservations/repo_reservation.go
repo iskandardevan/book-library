@@ -8,14 +8,14 @@ import (
 )
 
 type reservationRepo struct {
-	db *gorm.DB
+	DB *gorm.DB
 }
 
-func NewReservationRepo(db *gorm.DB) *reservationRepo {
-	return &reservationRepo{db: db}
+func NewReservationRepo(DB *gorm.DB) *reservationRepo {
+	return &reservationRepo{DB: DB}
 }
 
-func (Repo *reservationRepo) AddReservation(ctx context.Context, domain *reservations.Domain) (reservations.Domain, error) {
+func (Repo *reservationRepo) AddReservation(ctx context.Context, domain reservations.Domain) (reservations.Domain, error) {
 	reservation := Reservation{
 		Id:    				domain.Id,
 		Book_ID:  			domain.Book_ID,
@@ -23,9 +23,18 @@ func (Repo *reservationRepo) AddReservation(ctx context.Context, domain *reserva
 		Start:				domain.Start,
 		End:   				domain.End,
 	}
-	err := Repo.db.Create(&reservation)
+	err := Repo.DB.Create(&reservation)
 	if err.Error != nil {
 		return reservations.Domain{}, err.Error
 	}
 	return reservation.ToDomain(), nil
+}
+
+func (Repo *reservationRepo) GetAllReservations(ctx context.Context) ([]reservations.Domain, error){
+	var reservation []Reservation
+	err := Repo.DB.Find(&reservation)
+	if err.Error != nil {
+		return []reservations.Domain{}, err.Error
+	}
+	return GetAllReservation(reservation), nil
 }

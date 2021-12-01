@@ -48,6 +48,29 @@ func TestRegister(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, userDomain, user)
 	})
+	t.Run("Test Case 2 | No Email", func(t *testing.T) {
+		
+		userRepository.On("RegisterUser", mock.Anything, mock.Anything).Return(userDomain, errors.New("email belum di isi")).Once() 
+		user, err := userService.RegisterUser(context.Background(), users.Domain{
+			Id 			:1,
+			Email		:"",
+			Password	:"9875465",
+		})
+		assert.Error(t, err)
+		assert.NotNil(t, user)
+	})
+	t.Run("Test Case 3 | No Password", func(t *testing.T) {
+		
+		userRepository.On("RegisterUser", mock.Anything, mock.Anything).Return(userDomain, errors.New("password belum di isi")).Once() 
+		user, err := userService.RegisterUser(context.Background(), users.Domain{
+			Id 			:1,
+			Email		:"siteslagixixi@gmail.com",
+			Password	:"",
+			
+		})
+		assert.Error(t, err)
+		assert.NotNil(t, user)
+	})
 }
 
 
@@ -103,7 +126,7 @@ func TestLogin(t *testing.T) {
 		assert.Equal(t, user, users.Domain{})
 	})
 
-	t.Run("Test Case 2 | Cannot Login (Password Not Found)", func(t *testing.T) {
+	t.Run("Test Case 2 | Cannot Login ", func(t *testing.T) {
 		data, token, err := userService.LoginUser(userDomain.Email, "", context.Background())
 
 		assert.Equal(t, users.Domain{}, data)
@@ -111,7 +134,7 @@ func TestLogin(t *testing.T) {
 		assert.Equal(t, token, "")
 	})
 
-	t.Run("Test Case 3 | Cannot Login (Wrong Auth)", func(t *testing.T) {
+	t.Run("Test Case 3 | Cannot Login ", func(t *testing.T) {
 		setup()
 		userRepository.On("GetEmail", mock.Anything, mock.AnythingOfType("string")).Return(users.Domain{}, errors.New("tidak ada user dengan ID tersebut")).Once()
 		data, token, err := userService.LoginUser(userDomain.Email, "qqwerty", context.Background())
@@ -119,36 +142,48 @@ func TestLogin(t *testing.T) {
 		assert.Equal(t, users.Domain{}, data, token, "")
 		assert.NoError(t, err)
 	})
+	
+	t.Run("Test Case 4 | No Email ", func(t *testing.T) {
+		setup()
+		userRepository.On("GetEmail", mock.Anything, mock.AnythingOfType("string")).Return(users.Domain{}, errors.New("email belum di isi")).Once()
+		data, token, err := userService.LoginUser("", userDomain.Password, context.Background())
+
+		assert.Equal(t, users.Domain{}, data, token, "")
+		assert.Error(t, err)
+	})
+
+	
 }
 
-// func TestGetById(t *testing.T) {
-// 	t.Run("Test case 1 | Success GetByID", func(t *testing.T) {
-// 		setup()
-// 		userRepository.On("GetByID", mock.Anything, mock.AnythingOfType("uint")).Return(userDomain, nil).Once()
-// 		user, err := userService.GetByID(userDomain.Id, context.Background())
+func TestGetById(t *testing.T) {
+	t.Run("Test case 1 | Success GetByID", func(t *testing.T) {
+		setup()
+		userRepository.On("GetByID", mock.AnythingOfType("uint") ,mock.Anything ).Return(userDomain, nil).Once()
+		user, err := userService.GetByID(userDomain.Id, context.Background())
 
-// 		assert.NoError(t, err)
-// 		assert.NotNil(t, user)
-// 	})
+		assert.NoError(t, err)
+		assert.NotNil(t, user)
+	})
 
-// 	t.Run("Test case 2 | Error GetByID(user Id = 0)", func(t *testing.T) {
-// 		setup()
-// 		userDomain.Id = 0
-// 		userRepository.On("GetByID", mock.Anything, mock.AnythingOfType("uint")).Return(userDomain, nil).Once()
-// 		data, err := userService.GetByID(userDomain.Id, context.Background())
+	t.Run("Test case 2 | Error GetByID(user Id = 0)", func(t *testing.T) {
+		setup()
+		userDomain.Id = 0
+		userRepository.On("GetByID", mock.AnythingOfType("uint") ,mock.Anything ).Return(userDomain, nil).Once()
+		data, err := userService.GetByID(userDomain.Id, context.Background())
 
-// 		assert.NoError(t, err)
-// 		assert.NotNil(t, data)
-// 		assert.Equal(t, data, users.Domain{})
-// 	})
+		assert.Error(t, err)
+		assert.NotNil(t, data)
+		assert.Equal(t, data, users.Domain{})
+	})
 
-// 	t.Run("Test case 3 | Error GetByID", func(t *testing.T) {
-// 		setup()
-// 		userRepository.On("GetByID", mock.Anything, mock.AnythingOfType("uint")).Return(users.Domain{}, nil).Once()
-// 		data, err := userService.GetByID(3, context.Background())
+	t.Run("Test case 3 | Error GetByID", func(t *testing.T) {
+		setup()
+		userRepository.On("GetByID", mock.AnythingOfType("uint") ,mock.Anything ).Return(users.Domain{}, nil).Once()
+		data, err := userService.GetByID(3, context.Background())
 
-// 		assert.NoError(t, err)
-// 		assert.NotNil(t, data)
-// 		assert.Equal(t, data, users.Domain{})
-// 	})
-// }
+		assert.NoError(t, err)
+		assert.NotNil(t, data)
+		assert.Equal(t, data, users.Domain{})
+	})
+
+}

@@ -15,7 +15,7 @@ func NewBookRepo(DB *gorm.DB) *bookRepo {
 	return &bookRepo{DB: DB}
 }
 
-func (Repo *bookRepo) RegisterBook(ctx context.Context, domain *books.Domain) (books.Domain, error) {
+func (Repo *bookRepo) AddBook(ctx context.Context, domain books.Domain) (books.Domain, error) {
 	book := Book{
 		Id:               domain.Id,
 		Title:            domain.Title,

@@ -25,9 +25,17 @@ func (usecase *ReservationUseCase) AddReservation(ctx context.Context, domain Do
 	if domain.User_ID == 0{
 		return Domain{}, errors.New("nama harus di isi")
 	}
-	reservation, err := usecase.repo.AddReservation(ctx, &domain)
+	reservation, err := usecase.repo.AddReservation(ctx, domain)
 	if err != nil {
 		return Domain{}, err
+	}
+	return reservation, nil
+}
+
+func (usecase *ReservationUseCase) GetAllReservations(ctx context.Context) ([]Domain, error) {
+	reservation, err := usecase.repo.GetAllReservations(ctx)
+	if err != nil {
+		return []Domain{}, errors.New("tidak ada reservasi")
 	}
 	return reservation, nil
 }

@@ -36,3 +36,13 @@ func (reservationController *ReservationController) AddReservation (c echo.Conte
 	return controllers.NewSuccesResponse(c, response.FromDomainReservation(data))
 
 }
+
+func (reservationController *ReservationController) GetAllReservations (c echo.Context) error {
+	req := c.Request().Context()
+	reservation, err := reservationController.reservationUseCase.GetAllReservations(req)
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+	return controllers.NewSuccesResponse(c, response.GetAllReservation(reservation))
+
+}

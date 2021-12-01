@@ -34,8 +34,9 @@ func (ctrl *RouteControllerList) RouteRegister(e *echo.Echo) {
 
 	e.POST("book/add", ctrl.BookController.AddBook)
 	e.GET("books", ctrl.BookController.GetAllBooks)
-	e.POST("reservation/add", ctrl.ReservationController.AddReservation)
 
+	e.POST("reservation/add", ctrl.ReservationController.AddReservation)
+	e.GET("reservations", ctrl.ReservationController.GetAllReservations)
 	
 	
 }

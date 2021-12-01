@@ -11,9 +11,9 @@ import (
 
 type Reservation struct {
 	Id        uint 			`gorm:"primaryKey"`
-	Book      books.Book	`gorm:"constraint:OnUpdate:NO ACTION,OnDelete:CASCADE;"`
+	Book      books.Book	`gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	Book_ID		uint	
-	User      users.User 	`gorm:"constraint:OnUpdate:NO ACTION,OnDelete:CASCADE;"`
+	User      users.User 	`gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	User_ID		uint
 	Start     time.Time
 	End       time.Time
@@ -45,4 +45,12 @@ func FromDomain(domain reservations.Domain) Reservation  {
 		UpdatedAt 	:domain.UpdatedAt,
 	}
 
+}
+
+func GetAllReservation(data []Reservation) []reservations.Domain{
+	res := []reservations.Domain{}
+	for _, val := range data{
+		res = append(res, val.ToDomain())
+	}
+	return res
 }

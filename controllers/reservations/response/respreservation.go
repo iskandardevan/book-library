@@ -33,3 +33,11 @@ func FromDomainReservation(domain reservations.Domain) ReservationResponse{
 		UpdatedAt:			domain.UpdatedAt,
 	}
 }
+
+func GetAllReservation(data []reservations.Domain) []ReservationResponse{
+	var res []ReservationResponse
+	for _, val := range data{
+		res = append(res, FromDomainReservation(val))
+	}
+	return res
+}
