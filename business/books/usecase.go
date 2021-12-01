@@ -35,3 +35,11 @@ func (usecase *BookUseCase) AddBook(ctx context.Context, domain Domain) (Domain,
 
 	return book, nil
 }
+
+func (usecase *BookUseCase) GetAllBooks(ctx context.Context) ([]Domain, error) {
+	book, err := usecase.repo.GetAllBooks(ctx)
+	if err != nil {
+		return []Domain{}, errors.New("tidak ada buku")
+	}
+	return book, nil
+}

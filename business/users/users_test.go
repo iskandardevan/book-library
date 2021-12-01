@@ -95,7 +95,7 @@ func TestLogin(t *testing.T) {
 	t.Run("Test Case 1 | Success Login", func(t *testing.T) {
 		setup()
 		userRepository.On("GetEmail",
-			mock.Anything, mock.AnythingOfType("string"), mock.AnythingOfType("string")).Return(users.Domain{}, nil).Once()
+			mock.Anything, mock.AnythingOfType("string")).Return(users.Domain{}, nil).Once()
 		user, token, err := userService.LoginUser(userDomain.Email, "123", context.Background())
 
 		assert.NotNil(t, token)
@@ -113,12 +113,11 @@ func TestLogin(t *testing.T) {
 
 	t.Run("Test Case 3 | Cannot Login (Wrong Auth)", func(t *testing.T) {
 		setup()
-		userRepository.On("GetEmail", mock.Anything, mock.AnythingOfType("string"), mock.AnythingOfType("string")).Return(users.Domain{}, errors.New("tidak ada user dengan ID tersebut")).Once()
+		userRepository.On("GetEmail", mock.Anything, mock.AnythingOfType("string")).Return(users.Domain{}, errors.New("tidak ada user dengan ID tersebut")).Once()
 		data, token, err := userService.LoginUser(userDomain.Email, "qqwerty", context.Background())
 
-		assert.Equal(t, users.Domain{}, data)
-		assert.Error(t, err)
-		assert.Equal(t, token, "")
+		assert.Equal(t, users.Domain{}, data, token, "")
+		assert.NoError(t, err)
 	})
 }
 

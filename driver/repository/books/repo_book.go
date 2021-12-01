@@ -8,11 +8,11 @@ import (
 )
 
 type bookRepo struct {
-	db *gorm.DB
+	DB *gorm.DB
 }
 
-func NewBookRepo(db *gorm.DB) *bookRepo {
-	return &bookRepo{db: db}
+func NewBookRepo(DB *gorm.DB) *bookRepo {
+	return &bookRepo{DB: DB}
 }
 
 func (Repo *bookRepo) RegisterBook(ctx context.Context, domain *books.Domain) (books.Domain, error) {
@@ -24,9 +24,18 @@ func (Repo *bookRepo) RegisterBook(ctx context.Context, domain *books.Domain) (b
 		Publisher_ID		:domain.Publisher_ID,
 		Publication_Year: domain.Publication_Year,
 	}
-	err := Repo.db.Create(&book)
+	err := Repo.DB.Create(&book)
 	if err.Error != nil {
 		return books.Domain{}, err.Error
 	}
 	return book.ToDomain(), nil
+}
+
+func (Repo *bookRepo) GetAllBooks(ctx context.Context) ([]books.Domain, error){
+	var book []Book
+	err := Repo.DB.Find(&book)
+	if err.Error != nil {
+		return []books.Domain{}, err.Error
+	}
+	return GetAllBook(book), nil
 }

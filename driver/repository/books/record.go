@@ -49,3 +49,11 @@ func FromDomain(domain books.Domain) Book {
 	}
 
 }
+
+func GetAllBook(data []Book) []books.Domain{
+	res := []books.Domain{}
+	for _, val := range data{
+		res = append(res, val.ToDomain())
+	}
+	return res
+}

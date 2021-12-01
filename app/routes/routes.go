@@ -16,6 +16,7 @@ type RouteControllerList struct {
 	PublisherController	publishers.PublisherController
 	BookController		books.BookController
 	ReservationController	reservations.ReservationController
+
 }
 
 
@@ -32,7 +33,7 @@ func (ctrl *RouteControllerList) RouteRegister(e *echo.Echo) {
 	e.POST("publisher/add", ctrl.PublisherController.AddPublisher)
 
 	e.POST("book/add", ctrl.BookController.AddBook)
-
+	e.GET("books", ctrl.BookController.GetAllBooks)
 	e.POST("reservation/add", ctrl.ReservationController.AddReservation)
 
 	

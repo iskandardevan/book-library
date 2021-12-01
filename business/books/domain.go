@@ -25,8 +25,10 @@ type Domain struct {
 
 type BooksUsecaseInterface interface{
 	AddBook(ctx context.Context, domain Domain) (Domain, error)
+	GetAllBooks(ctx context.Context) ([]Domain, error)
 }
 
 type BooksRepoInterface interface {
 	RegisterBook(ctx context.Context, domain *Domain) (Domain, error)
+	GetAllBooks(ctx context.Context) ([]Domain, error)
 }
