@@ -2,7 +2,7 @@ name: "running unit test, build docker image"
 on:
   push:
     branches:
-      - "master"
+      - "main"
 
 jobs:
   unit-test:
@@ -30,3 +30,29 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - name: push image to dockerhub
         run: docker push iskandev/book-library:latest
+  deployment:
+    name: "deploy to ec2"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: action/checkout@v2
+      - name: configuration ssh
+        env :
+          SSH USER: ${{ secrets.SSH_USERNAME }}
+          SSH_KEY: ${{ secrets.BOOK_LIBRARY }}
+          SSH_HOST: ${{ secret.SSH_HOST }}
+        run: 
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/book-library.pem
+          chmod 700 ~/.ssh/book-library.pem
+          cat >> ~/.ssh/config << END
+          Host development
+            Host_name $SSH_HOST
+            User $SSH_USER
+            IdentifyFile ~/.ssh/book-library.pem
+            StrictHostKeyChecking = no
+          END
+      - name: connect ec2, remove container, pull from registry, end start
+        run: ssh development 'docker rm -f $(docker ps -a -q)'|| true && docker pull iskandev/
+          book-library:latest && docker run -p 8080:8080 --name iskandev/book-library:latest
+
+
