@@ -16,6 +16,7 @@ jobs:
           go-version: 1.17.2
       - name: "running unit test"
         run: go test ./... -cover
+  
   build-push-docker:
     name: "build image and push registry dockerhub"
     runs-on: ubuntu-latest
@@ -24,7 +25,7 @@ jobs:
       - name: build image
         run: docker build -t iskandev/book-library .
       - name: login dockerhub"
-        uses: docker/login-actions@v1
+        uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
