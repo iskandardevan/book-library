@@ -15,7 +15,7 @@ func NewAuthorRepo(DB *gorm.DB) authors.AuthorRepoInterface {
 	return &authorRepo{DB: DB}
 }
 
-func (Repo *authorRepo) RegisterAuthor(ctx context.Context, domain *authors.Domain) (authors.Domain, error) {
+func (Repo *authorRepo) AddAuthor(ctx context.Context, domain authors.Domain) (authors.Domain, error) {
 	author := Author{
 		Id 			:domain.Id,
 		Email		:domain.Email,

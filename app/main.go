@@ -10,18 +10,22 @@ import (
 	authorUseCase "github.com/iskandardevan/book-library/business/authors"
 	bookUseCase "github.com/iskandardevan/book-library/business/books"
 	publisherUseCase "github.com/iskandardevan/book-library/business/publishers"
+	reservationUseCase "github.com/iskandardevan/book-library/business/reservations"
 	userUseCase "github.com/iskandardevan/book-library/business/users"
 
 	authorController "github.com/iskandardevan/book-library/controllers/authors"
 	bookController "github.com/iskandardevan/book-library/controllers/books"
 	publisherController "github.com/iskandardevan/book-library/controllers/publishers"
+	reservationController "github.com/iskandardevan/book-library/controllers/reservations"
 	userController "github.com/iskandardevan/book-library/controllers/users"
 
-	"github.com/iskandardevan/book-library/driver/mysql"
 	authorRepo "github.com/iskandardevan/book-library/driver/repository/authors"
 	bookRepo "github.com/iskandardevan/book-library/driver/repository/books"
 	publisherRepo "github.com/iskandardevan/book-library/driver/repository/publishers"
+	reservationRepo "github.com/iskandardevan/book-library/driver/repository/reservations"
 	userRepo "github.com/iskandardevan/book-library/driver/repository/users"
+
+	"github.com/iskandardevan/book-library/driver/mysql"
 	"github.com/labstack/echo/v4"
 	"github.com/spf13/viper"
 	"gorm.io/gorm"
@@ -45,6 +49,7 @@ func DBMigrate(DB *gorm.DB) {
 	DB.AutoMigrate(&authorRepo.Author{})
 	DB.AutoMigrate(&bookRepo.Book{})
 	DB.AutoMigrate(&publisherRepo.Publisher{})
+	DB.AutoMigrate(&reservationRepo.Reservation{})
 }
 
 func main(){
@@ -78,12 +83,17 @@ func main(){
 	bookUseCaseInterface := bookUseCase.NewUseCase(bookRepoInterface , timeoutContext )
 	bookUseControllerInterface := bookController.NewBookController(bookUseCaseInterface)
 
+	reservationRepoInterface := reservationRepo.NewReservationRepo(DB)
+	reservationUseCaseInterface := reservationUseCase.NewUseCase(reservationRepoInterface , timeoutContext )
+	reservationUseControllerInterface := reservationController.NewReservationController(reservationUseCaseInterface)
+
 
 	routesInit := routes.RouteControllerList{
 		UserController: *userUseControllerInterface,
 		AuthorController: *authorUseControllerInterface,
 		PublisherController: *publisherUseControllerInterface,
 		BookController: *bookUseControllerInterface,
+		ReservationController: *reservationUseControllerInterface,
 	}
 	routesInit.RouteRegister(e)
 	log.Fatal(e.Start(viper.GetString("server.address")))

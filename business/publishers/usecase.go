@@ -32,7 +32,7 @@ func (usecase *PublisherUseCase) AddPublisher(ctx context.Context, domain Domain
 		return Domain{}, errors.New("alamat harus di isi")
 	}
 
-	publisher, err := usecase.repo.RegisterPublisher(ctx, &domain)
+	publisher, err := usecase.repo.AddPublisher(ctx, domain)
 	if err != nil {
 		return Domain{}, err
 	}

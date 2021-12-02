@@ -14,9 +14,9 @@ type Book struct {
 	Title          	 string 					`gorm:"unique"`
 	Edition          int
 	Author_ID		 uint			
-	Author			 authors.Author				`gorm:"constraint:OnUpdate:NO ACTION,OnDelete:CASCADE;"`
-	Publisher_ID	 uint						`gorm:"foreignKey"`
-	Publisher		 publishers.Publisher		`gorm:"constraint:OnUpdate:NO ACTION,OnDelete:CASCADE;"`
+	Author			 authors.Author				`gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Publisher_ID	 uint						
+	Publisher		 publishers.Publisher		`gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	Publication_Year string
 	CreatedAt        time.Time
 	UpdatedAt        time.Time
@@ -48,4 +48,12 @@ func FromDomain(domain books.Domain) Book {
 		UpdatedAt			:domain.UpdatedAt,
 	}
 
+}
+
+func GetAllBook(data []Book) []books.Domain{
+	res := []books.Domain{}
+	for _, val := range data{
+		res = append(res, val.ToDomain())
+	}
+	return res
 }

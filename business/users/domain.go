@@ -24,12 +24,15 @@ type UserUsecaseInterface interface {
 	LoginUser(email string, password string, ctx context.Context) (Domain, string, error)
 	GetByID(id uint, ctx context.Context) (Domain, error)
 	RegisterUser(ctx context.Context, domain Domain) (Domain, error)
-	
+	UpdateUserByID(id uint, ctx context.Context, domain Domain) (Domain, error)
+	DeleteUserByID(id uint, ctx context.Context)error
 }
 
 type UserRepoInterface interface {
-	GetByID(id uint) (Domain, error)
+	GetByID(id uint, ctx context.Context) (Domain, error)
 	RegisterUser(ctx context.Context, domain *Domain) (Domain, error)
 	GetEmail(ctx context.Context, email string) (Domain, error)
+	UpdateUserByID(id uint, ctx context.Context, domain Domain) (Domain, error)
+	DeleteUserByID(id uint, ctx context.Context)error
 }
 

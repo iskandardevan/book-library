@@ -2,11 +2,13 @@ package users
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/iskandardevan/book-library/business/users"
 	"github.com/iskandardevan/book-library/controllers"
 	"github.com/iskandardevan/book-library/controllers/users/request"
 	"github.com/iskandardevan/book-library/controllers/users/response"
+	"github.com/iskandardevan/book-library/helpers"
 	"github.com/labstack/echo/v4"
 )
 
@@ -60,21 +62,51 @@ func (userController *UserController) LoginUser (c echo.Context) error {
 }
 
 func (userController *UserController) GetByID (c echo.Context) error{
-	var getid users.Domain
-	var err error
-	ctx := c.Request().Context()
-	req := request.GetByID{}
-	err = c.Bind(&req)
+	req := c.Request().Context()
+	id := c.Param("id")
+	Convint, errConvint := strconv.Atoi(id)
+	if errConvint != nil {
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, errConvint)
+	}
+	data, err := userController.userUseCase.GetByID(uint(Convint), req )
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+	return controllers.NewSuccesResponse(c, response.FromUserRegister(data))
+}
 
+func (userController *UserController) UpdateUserByID (c echo.Context) error{
+	id := c.Param("id")
+	convID, err := helpers.StringToUint(id)
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
 	}
-
-	getid, err = userController.userUseCase.GetByID(req.Id, ctx)
+	req := request.RegisterUserRequest{}
+	err = c.Bind(&req)
+	if err != nil {
+		return err
+	}
+	ctx := c.Request().Context()
+	data, err := userController.userUseCase.UpdateUserByID(convID, ctx, *req.ToDomain())
 
 	if err != nil {
 		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
 	}
-	return controllers.NewSuccesResponse(c, response.GetByID(getid))
+	return controllers.NewSuccesResponse(c, response.FromUserRegister(data))
 
+}
+
+func (userController *UserController) DeleteUserByID (c echo.Context) error{
+	id := c.Param("id")
+	convID, err := helpers.StringToUint(id)
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
+	}
+	ctx := c.Request().Context()
+	err = userController.userUseCase.DeleteUserByID(convID, ctx)
+
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+	return controllers.NewSuccesResponse(c, nil)
 }

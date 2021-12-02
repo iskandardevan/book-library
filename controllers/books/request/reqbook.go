@@ -9,7 +9,7 @@ type AddBookRequest struct {
 	Edition          int       `json:"edition"`
 	Author_ID        uint      `json:"author_id"`
 	Publisher_ID     uint      `json:"publisher_id"`
-	Publication_Year string `json:"publication_year"`
+	Publication_Year string 	`json:"publication_year"`
 }
 
 func (Book *AddBookRequest) ToDomain() *books.Domain {
@@ -21,3 +21,4 @@ func (Book *AddBookRequest) ToDomain() *books.Domain {
 		Publication_Year: Book.Publication_Year,
 	}
 }
+

@@ -35,7 +35,7 @@ func (usecase *AuthorUseCase) AddAuthor(ctx context.Context, domain Domain) (Dom
 		return Domain{}, errors.New("alamat harus di isi")
 	}
 
-	author, err := usecase.repo.RegisterAuthor(ctx, &domain)
+	author, err := usecase.repo.AddAuthor(ctx, domain)
 	if err != nil {
 		return Domain{}, err
 	}

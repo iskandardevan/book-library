@@ -25,13 +25,21 @@ func (usecase *BookUseCase) AddBook(ctx context.Context, domain Domain) (Domain,
 	if domain.Edition == 0 {
 		return Domain{}, errors.New("edition harus di isi")
 	}
-	// if domain.Publication_Year == 0 {
-	// 	return Domain{}, errors.New("umur harus di isi")
-	// }
-	book, err := usecase.repo.RegisterBook(ctx, &domain)
+	if domain.Publication_Year == "" {
+		return Domain{}, errors.New("tahun terbit harus di isi")
+	}
+	book, err := usecase.repo.AddBook(ctx, domain)
 	if err != nil {
 		return Domain{}, err
 	}
 
+	return book, nil
+}
+
+func (usecase *BookUseCase) GetAllBooks(ctx context.Context) ([]Domain, error) {
+	book, err := usecase.repo.GetAllBooks(ctx)
+	if err != nil {
+		return []Domain{}, errors.New("tidak ada buku")
+	}
 	return book, nil
 }

@@ -31,3 +31,11 @@ func FromDomainBook(domain books.Domain) BookResponse {
 		UpdatedAt			:domain.UpdatedAt,
 	}
 }
+
+func GetAllBook(data []books.Domain) []BookResponse{
+	var res []BookResponse
+	for _, val := range data{
+		res = append(res, FromDomainBook(val))
+	}
+	return res
+}

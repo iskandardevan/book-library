@@ -37,3 +37,13 @@ func (bookController *BookController) AddBook (c echo.Context) error {
 	return controllers.NewSuccesResponse(c, response.FromDomainBook(data))
 
 }
+
+func (bookController *BookController) GetAllBooks (c echo.Context) error {
+	req := c.Request().Context()
+	book, err := bookController.bookUseCase.GetAllBooks(req)
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+	return controllers.NewSuccesResponse(c, response.GetAllBook(book))
+
+}

@@ -24,6 +24,6 @@ type AuthorUsecaseInterface interface {
 }
 
 type AuthorRepoInterface interface {
-	RegisterAuthor(ctx context.Context, domain *Domain) (Domain, error)
+	AddAuthor(ctx context.Context, domain Domain) (Domain, error)
 }
 
