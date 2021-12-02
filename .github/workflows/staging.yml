@@ -2,7 +2,7 @@ name: "running unit test, build docker image"
 on:
   push:
     branches:
-      - master
+      - "master"
 
 jobs:
   unit-test:
@@ -10,17 +10,23 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v2
-      - name: setup g
+      - name: setup go
         uses:  actions/setup-go@v2
         with:
           go-version: 1.17.2
       - name: "running unit test"
-      # run: go test ./... -cover
+        run: go test ./... -cover
   build-push-docker:
     name: "build image and push registry dockerhub"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: build image
-        run: docker build -t iskandev/book-library
-      # - name: 
+        run: docker build -t iskandev/book-library .
+      - name: login dockerhub"
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: push image to dockerhub
+        run: docker push iskandev/book-library:latest
