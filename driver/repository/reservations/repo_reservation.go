@@ -33,7 +33,7 @@ func (Repo *reservationRepo) AddReservation(ctx context.Context, domain reservat
 
 func (Repo *reservationRepo) GetAllReservations(ctx context.Context) ([]reservations.Domain, error){
 	var reservation []Reservation
-	err := Repo.DB.Preload("User").Preload("Book").Find(&reservation)
+	err := Repo.DB.Preload("Author").Preload("Publisher").Preload("User").Preload("Book").Find(&reservation)
 	if err.Error != nil {
 		return []reservations.Domain{}, err.Error
 	}
