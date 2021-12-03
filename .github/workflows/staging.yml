@@ -56,6 +56,6 @@ jobs:
           END
       - name: connect ec2, remove container, pull from registry, end start
         run: ssh development 'docker rm -f $(docker ps -a -q) || true && docker pull iskandev/
-          book-library:latest && docker run -d -p 8080:8080 --name iskandev/book-library:latest'
+          book-library:latest && docker run -d -p 8080:8080 --name book-library iskandev/book-library:latest'
 
 
