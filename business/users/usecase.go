@@ -74,6 +74,14 @@ func (usecase *UserUseCase) GetByID(id uint, ctx context.Context) (Domain, error
 	return user, nil
 }
 
+func (usecase *UserUseCase) GetAllUsers(ctx context.Context) ([]Domain, error){
+	user, err := usecase.repo.GetAllUsers(ctx)
+	if err != nil {
+		return []Domain{}, errors.New("tidak ada pengguna")
+	}
+	return user, nil
+}
+
 func (usecase *UserUseCase) UpdateUserByID(id uint, ctx context.Context, domain Domain) (Domain, error){
 	domain.Id = (id)
 	user, err := usecase.repo.UpdateUserByID(id, ctx , domain)

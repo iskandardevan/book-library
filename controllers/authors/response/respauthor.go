@@ -33,10 +33,10 @@ func FromDomainAuthor(domain authors.Domain) AuthorResponse {
 	}
 }
 
-// func GetAllauthor(domain []author.Domain) []UserResponse {
-// 	var GetAllauthor []UserResponse
-// 	for _, val := range domain{
-// 		GetAllauthor = append(GetAllauthor, FromDomain(val))
-// 	}
-// 	return GetAllauthor 
-// }
+func GetAllAuthors(domain []authors.Domain) []AuthorResponse {
+	var GetAllauthor []AuthorResponse
+	for _, val := range domain{
+		GetAllauthor = append(GetAllauthor, FromDomainAuthor(val))
+	}
+	return GetAllauthor 
+}

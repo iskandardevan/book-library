@@ -39,3 +39,11 @@ func (usecase *ReservationUseCase) GetAllReservations(ctx context.Context) ([]Do
 	}
 	return reservation, nil
 }
+
+func (usecase *ReservationUseCase) Delete(id uint, ctx context.Context) error{
+	err := usecase.repo.Delete(id, ctx)
+	if err != nil {
+		return errors.New("tidak ada Reservation dengan ID tersebut")
+	}
+	return nil
+}

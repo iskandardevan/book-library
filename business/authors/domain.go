@@ -21,9 +21,13 @@ type Domain struct {
 
 type AuthorUsecaseInterface interface {
 	AddAuthor(ctx context.Context, domain Domain) (Domain, error)
+	GetAllAuthors(ctx context.Context) ([]Domain, error)
+	Delete(id uint, ctx context.Context)error
 }
 
 type AuthorRepoInterface interface {
 	AddAuthor(ctx context.Context, domain Domain) (Domain, error)
+	GetAllAuthors(ctx context.Context) ([]Domain, error)
+	Delete(id uint, ctx context.Context)error
 }
 

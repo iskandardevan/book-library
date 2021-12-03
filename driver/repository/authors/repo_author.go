@@ -2,6 +2,7 @@ package authors
 
 import (
 	"context"
+	"errors"
 
 	"github.com/iskandardevan/book-library/business/authors"
 	"gorm.io/gorm"
@@ -29,4 +30,26 @@ func (Repo *authorRepo) AddAuthor(ctx context.Context, domain authors.Domain) (a
 		return authors.Domain{}, err.Error
 	}
 	return author.ToDomain(), nil
-} 
+}
+
+func (Repo *authorRepo) GetAllAuthors(ctx context.Context) ([]authors.Domain, error){
+	var author []Author
+	err := Repo.DB.Find(&author)
+	if err.Error != nil {
+		return []authors.Domain{}, err.Error
+	}
+	return GetAllAuthors(author), nil
+}
+
+func (Repo *authorRepo) Delete(id uint, ctx context.Context) error{
+	author := Author{}
+	err := Repo.DB.Delete(&author, id)
+	if err.Error!= nil {
+		return err.Error
+		
+	}
+	if err.RowsAffected == 0 {
+		return errors.New("data kosong")
+	}
+	return nil
+}

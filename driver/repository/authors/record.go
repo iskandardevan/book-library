@@ -21,7 +21,7 @@ type Author struct {
 }
 
 func (author *Author) ToDomain() authors.Domain {
-	return authors.Domain{
+	res := authors.Domain{
 		Id 			:author.Id,
 		Email		:author.Email,
 		Name 		:author.Name,
@@ -31,6 +31,9 @@ func (author *Author) ToDomain() authors.Domain {
 		CreatedAt 	:author.CreatedAt,
 		UpdatedAt 	:author.UpdatedAt,
 	}
+	// j, _ := json.MarshalIndent(res, " ", " ")
+	// fmt.Println("To Domain Author", string(j))
+	return res
 }
 
 func FromDomain(domain authors.Domain) Author  {
@@ -45,4 +48,12 @@ func FromDomain(domain authors.Domain) Author  {
 		UpdatedAt 	:domain.UpdatedAt,
 	}
 
+}
+
+func GetAllAuthors(data []Author) []authors.Domain{
+	res := []authors.Domain{}
+	for _, val := range data{
+		res = append(res, val.ToDomain())
+	}
+	return res
 }

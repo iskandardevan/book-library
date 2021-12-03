@@ -12,9 +12,9 @@ import (
 type Reservation struct {
 	Id        uint 			`gorm:"primaryKey"`
 	Book      books.Book	`gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-	Book_ID		uint	
+	Book_ID	  uint	
 	User      users.User 	`gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
-	User_ID		uint
+	User_ID	  uint
 	Start     time.Time
 	End       time.Time
 	CreatedAt time.Time
@@ -26,7 +26,9 @@ func (reservation *Reservation) ToDomain() reservations.Domain {
 	return reservations.Domain{
 		Id 			:reservation.Id,
 		Book_ID     :reservation.Book_ID,
+		Book		:reservation.Book.ToDomain() ,
 		User_ID     :reservation.User_ID,
+		User		:reservation.User.ToDomain() ,
 		Start     	:reservation.Start,
 		End       	:reservation.End,
 		CreatedAt 	:reservation.CreatedAt,
@@ -38,7 +40,9 @@ func FromDomain(domain reservations.Domain) Reservation  {
 	return Reservation{
 		Id 			:domain.Id,
 		Book_ID     :domain.Book_ID,
+		Book		:books.FromDomain(domain.Book) ,
 		User_ID   	:domain.User_ID,
+		User		:users.FromDomain(domain.User) ,
 		Start     	:domain.Start,
 		End       	:domain.End,
 		CreatedAt 	:domain.CreatedAt,

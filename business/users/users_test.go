@@ -18,6 +18,8 @@ var userService users.UserUsecaseInterface
 var token string 
 var userDomain users.Domain
 
+var alluserDomain []users.Domain
+
 func setup(){
 	userService = users.NewUseCase(&userRepository, time.Hour*10, &middlewares.ConfigJWT{})
 	userDomain = users.Domain{
@@ -186,4 +188,25 @@ func TestGetById(t *testing.T) {
 		assert.Equal(t, data, users.Domain{})
 	})
 
+}
+
+func TestGetAllUsers(t *testing.T) {
+	t.Run("Test case 1 | Success Search user", func(t *testing.T) {
+        setup()
+        userRepository.On("GetAllUsers", mock.Anything).Return(alluserDomain, nil).Once()
+        data, err := userService.GetAllUsers(context.Background())
+
+        assert.NoError(t, err)
+        assert.Nil(t, data)
+        assert.Equal(t, len(data), len(alluserDomain))
+    })
+
+    t.Run("Test case 2 | Error Search user", func(t *testing.T) {
+        setup()
+        userRepository.On("GetAllUsers", mock.Anything, mock.Anything).Return([]users.Domain{}, errors.New("user Not Found")).Once()
+        data, err := userService.GetAllUsers(context.Background())
+
+        assert.Error(t, err)
+        assert.Equal(t, data, []users.Domain{})
+    })
 }

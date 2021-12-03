@@ -20,7 +20,7 @@ type Publisher struct {
 }
 
 func (publisher *Publisher) ToDomain() publishers.Domain {
-	return publishers.Domain{
+	res := publishers.Domain{
 		Id 			:publisher.Id,
 		Email		:publisher.Email,
 		Name 		:publisher.Name,
@@ -29,6 +29,9 @@ func (publisher *Publisher) ToDomain() publishers.Domain {
 		CreatedAt 	:publisher.CreatedAt,
 		UpdatedAt 	:publisher.UpdatedAt,
 	}
+	// j, _ := json.MarshalIndent(res, " ", " ")
+	// fmt.Println("To Domain Publiser", string(j))
+	return res
 }
 
 func FromDomain(domain publishers.Domain) Publisher  {
@@ -42,4 +45,12 @@ func FromDomain(domain publishers.Domain) Publisher  {
 		UpdatedAt 	:domain.UpdatedAt,
 	}
 
+}
+
+func GetAllPublishers(data []Publisher) []publishers.Domain{
+	res := []publishers.Domain{}
+	for _, val := range data{
+		res = append(res, val.ToDomain())
+	}
+	return res
 }

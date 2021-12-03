@@ -29,3 +29,11 @@ func FromDomainPublisher(domain publishers.Domain) PublisherResponse {
 		UpdatedAt: domain.UpdatedAt,
 	}
 }
+
+func GetAllPublishers(domain []publishers.Domain) []PublisherResponse {
+	var GetAllpublisher []PublisherResponse
+	for _, val := range domain{
+		GetAllpublisher = append(GetAllpublisher, FromDomainPublisher(val))
+	}
+	return GetAllpublisher
+}

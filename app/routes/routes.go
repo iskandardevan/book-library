@@ -1,6 +1,9 @@
 package routes
 
 import (
+	_ "github.com/iskandardevan/book-library/app/docs"
+	echoSwagger "github.com/swaggo/echo-swagger"
+
 	"github.com/iskandardevan/book-library/controllers/authors"
 	"github.com/iskandardevan/book-library/controllers/books"
 	"github.com/iskandardevan/book-library/controllers/publishers"
@@ -8,6 +11,7 @@ import (
 	"github.com/iskandardevan/book-library/controllers/users"
 	"github.com/labstack/echo/v4"
 )
+
 
 type RouteControllerList struct {
 	// JWTMiddleware middlewares.ConfigJWT
@@ -45,4 +49,5 @@ func (ctrl *RouteControllerList) RouteRegister(e *echo.Echo) {
 	e.GET("reservations", ctrl.ReservationController.GetAllReservations)
 	e.DELETE("reservation/:id", ctrl.ReservationController.Delete)
 	
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
 }

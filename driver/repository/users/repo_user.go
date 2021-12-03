@@ -43,6 +43,15 @@ func (Repo *userRepo) GetByID(id uint, ctx context.Context ) (users.Domain, erro
 	return user.ToDomain(), nil
 }
 
+func (Repo *userRepo) GetAllUsers(ctx context.Context) ([]users.Domain, error){
+	var user []User
+	err := Repo.DB.Find(&user)
+	if err.Error != nil {
+		return []users.Domain{}, err.Error
+	}
+	return GetAllUsers(user), nil
+}
+
 func (Repo *userRepo) UpdateUserByID(id uint, ctx context.Context, domain users.Domain) (users.Domain, error){
 	user := FromDomain(domain)
 	if Repo.DB.Save(&user).Error != nil {

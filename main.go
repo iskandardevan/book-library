@@ -31,7 +31,13 @@ import (
 	"gorm.io/gorm"
 )
 
+// @title book-library
+// @version 1.0
+// @description This is API for book-library
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
+// @BasePath /
 
 func init(){
 	viper.SetConfigFile(`config.json`)

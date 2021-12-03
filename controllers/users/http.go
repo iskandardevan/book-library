@@ -22,6 +22,15 @@ func NewUserController(UserUseCase users.UserUsecaseInterface) *UserController{
 	}
 }
 
+// RegisterUser user
+// @Tags users
+// @Summary RegisterUser user
+// @Description RegisterUser user
+// @Accept  json
+// @Produce  json
+// @Param data body request.RegisterUserRequest true "data"
+// @Success 200 {object} controllers.BaseResponse{data=response.UserResponse} "Register"
+// @Router /user/register [POST]
 func (userController *UserController) RegisterUser (c echo.Context) error {
 	req := request.RegisterUserRequest{}
 	var err error
@@ -39,6 +48,7 @@ func (userController *UserController) RegisterUser (c echo.Context) error {
 	return controllers.NewSuccesResponse(c, response.FromUserRegister(data))
 
 }
+
 
 
 func (userController *UserController) LoginUser (c echo.Context) error {
@@ -75,6 +85,16 @@ func (userController *UserController) GetByID (c echo.Context) error{
 	return controllers.NewSuccesResponse(c, response.FromUserRegister(data))
 }
 
+func (userController *UserController) GetAllUsers (c echo.Context) error {
+	req := c.Request().Context()
+	user, err := userController.userUseCase.GetAllUsers(req)
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+	}
+	return controllers.NewSuccesResponse(c, response.GetAllUsers(user))
+
+}
+
 func (userController *UserController) UpdateUserByID (c echo.Context) error{
 	id := c.Param("id")
 	convID, err := helpers.StringToUint(id)
@@ -90,7 +110,7 @@ func (userController *UserController) UpdateUserByID (c echo.Context) error{
 	data, err := userController.userUseCase.UpdateUserByID(convID, ctx, *req.ToDomain())
 
 	if err != nil {
-		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
 	}
 	return controllers.NewSuccesResponse(c, response.FromUserRegister(data))
 
@@ -106,7 +126,7 @@ func (userController *UserController) DeleteUserByID (c echo.Context) error{
 	err = userController.userUseCase.DeleteUserByID(convID, ctx)
 
 	if err != nil {
-		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
 	}
 	return controllers.NewSuccesResponse(c, nil)
 }

@@ -39,3 +39,19 @@ func (usecase *PublisherUseCase) AddPublisher(ctx context.Context, domain Domain
 
 	return publisher, nil
 }
+
+func (usecase *PublisherUseCase) GetAllPublishers(ctx context.Context) ([]Domain, error) {
+	publisher, err := usecase.repo.GetAllPublishers(ctx)
+	if err != nil {
+		return []Domain{}, errors.New("tidak ada publisher")
+	}
+	return publisher, nil
+}
+
+func (usecase *PublisherUseCase) Delete(id uint, ctx context.Context) error{
+	err := usecase.repo.Delete(id, ctx)
+	if err != nil {
+		return errors.New("tidak ada publisher dengan ID tersebut")
+	}
+	return nil
+}

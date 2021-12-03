@@ -49,3 +49,11 @@ func FromDomain(domain users.Domain) User  {
 	}
 
 }
+
+func GetAllUsers(data []User) []users.Domain{
+	res := []users.Domain{}
+	for _, val := range data{
+		res = append(res, val.ToDomain())
+	}
+	return res
+}

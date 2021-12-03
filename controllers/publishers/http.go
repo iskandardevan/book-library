@@ -7,6 +7,7 @@ import (
 	"github.com/iskandardevan/book-library/controllers"
 	"github.com/iskandardevan/book-library/controllers/publishers/request"
 	"github.com/iskandardevan/book-library/controllers/publishers/response"
+	"github.com/iskandardevan/book-library/helpers"
 	"github.com/labstack/echo/v4"
 )
 
@@ -20,6 +21,15 @@ func NewPublisherController(PublisherUseCase publishers.PublishersUsecaseInterfa
 	}
 }
 
+// AddPublisher publisher
+// @Tags publishers
+// @Summary AddPublisher publisher
+// @Description AddPublisher publisher
+// @Accept  json
+// @Produce  json
+// @Param data body request.AddPublisherRequest true "data"
+// @Success 200 {object} controllers.BaseResponse{data=response.PublisherResponse} "Add"
+// @Router /publisher/add [POST]
 func (publisherController *PublisherController) AddPublisher(c echo.Context) error {
 	req := request.AddPublisherRequest{}
 	var err error
@@ -32,8 +42,33 @@ func (publisherController *PublisherController) AddPublisher(c echo.Context) err
 	var data publishers.Domain
 	data, err = publisherController.publisherUseCase.AddPublisher(ctx, *req.ToDomain())
 	if err != nil {
-		return controllers.NewErrorResponse(c, http.StatusInternalServerError, err)
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
 	}
 	return controllers.NewSuccesResponse(c, response.FromDomainPublisher(data))
 
+}
+
+func (publisherController *PublisherController) GetAllPublishers(c echo.Context) error {
+	req := c.Request().Context()
+	publisher, err := publisherController.publisherUseCase.GetAllPublishers(req)
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
+	}
+	return controllers.NewSuccesResponse(c, response.GetAllPublishers(publisher))
+
+}
+
+func (publisherController *PublisherController) Delete(c echo.Context) error{
+	id := c.Param("id")
+	convID, err := helpers.StringToUint(id)
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
+	}
+	ctx := c.Request().Context()
+	err = publisherController.publisherUseCase.Delete(convID, ctx)
+
+	if err != nil {
+		return controllers.NewErrorResponse(c, http.StatusBadRequest, err)
+	}
+	return controllers.NewSuccesResponse(c, nil)
 }

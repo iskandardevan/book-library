@@ -2,6 +2,7 @@ package reservations
 
 import (
 	"context"
+	"errors"
 
 	"github.com/iskandardevan/book-library/business/reservations"
 	"gorm.io/gorm"
@@ -32,9 +33,22 @@ func (Repo *reservationRepo) AddReservation(ctx context.Context, domain reservat
 
 func (Repo *reservationRepo) GetAllReservations(ctx context.Context) ([]reservations.Domain, error){
 	var reservation []Reservation
-	err := Repo.DB.Find(&reservation)
+	err := Repo.DB.Preload("User").Preload("Book").Find(&reservation)
 	if err.Error != nil {
 		return []reservations.Domain{}, err.Error
 	}
 	return GetAllReservation(reservation), nil
+}
+
+func (Repo *reservationRepo) Delete(id uint, ctx context.Context) error{
+	reservation := Reservation{}
+	err := Repo.DB.Delete(&reservation, id)
+	if err.Error!= nil {
+		return err.Error
+		
+	}
+	if err.RowsAffected == 0 {
+		return errors.New("data kosong")
+	}
+	return nil
 }

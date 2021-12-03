@@ -1,4 +1,334 @@
+basePath: /
+definitions:
+  controllers.BaseResponse:
+    properties:
+      data: {}
+      meta:
+        properties:
+          message:
+            type: string
+          status:
+            type: integer
+        type: object
+    type: object
+  gorm.DeletedAt:
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
+    type: object
+  request.AddAuthorRequest:
+    properties:
+      address:
+        type: string
+      age:
+        type: integer
+      email:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+    type: object
+  request.AddBookRequest:
+    properties:
+      author_id:
+        type: integer
+      edition:
+        type: integer
+      publication_year:
+        type: string
+      publisher_id:
+        type: integer
+      title:
+        type: string
+    type: object
+  request.AddPublisherRequest:
+    properties:
+      address:
+        type: string
+      email:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+    type: object
+  request.AddReservationRequest:
+    properties:
+      book_id:
+        type: integer
+      user_id:
+        type: integer
+    type: object
+  request.RegisterUserRequest:
+    properties:
+      age:
+        type: integer
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+    type: object
+  response.AuthorResponse:
+    properties:
+      address:
+        type: string
+      age:
+        type: integer
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      phone:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  response.BookResponse:
+    properties:
+      author:
+        $ref: '#/definitions/response.AuthorResponse'
+      author_id:
+        type: integer
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      edition:
+        type: integer
+      id:
+        type: integer
+      publication_year:
+        type: string
+      publisher:
+        $ref: '#/definitions/response.PublisherResponse'
+      publisher_id:
+        type: integer
+      title:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  response.PublisherResponse:
+    properties:
+      address:
+        type: string
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      phone:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  response.ReservationResponse:
+    properties:
+      book:
+        $ref: '#/definitions/response.BookResponse'
+      book_id:
+        type: integer
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      end:
+        type: string
+      id:
+        type: integer
+      start:
+        type: string
+      updatedAt:
+        type: string
+      user:
+        $ref: '#/definitions/response.UserResponse'
+      user_id:
+        type: integer
+    type: object
+  response.UserResponse:
+    properties:
+      age:
+        type: integer
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      token:
+        type: string
+      updatedAt:
+        type: string
+    type: object
 info:
   contact: {}
-paths: {}
+  description: This is API for book-library
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: book-library
+  version: "1.0"
+paths:
+  /author/add:
+    post:
+      consumes:
+      - application/json
+      description: AddAuthor author
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.AddAuthorRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Add
+          schema:
+            allOf:
+            - $ref: '#/definitions/controllers.BaseResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.AuthorResponse'
+              type: object
+      summary: AddAuthor author
+      tags:
+      - authors
+  /book/add:
+    post:
+      consumes:
+      - application/json
+      description: AddBook book
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.AddBookRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Add
+          schema:
+            allOf:
+            - $ref: '#/definitions/controllers.BaseResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.BookResponse'
+              type: object
+      summary: AddBook book
+      tags:
+      - books
+  /publisher/add:
+    post:
+      consumes:
+      - application/json
+      description: AddPublisher publisher
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.AddPublisherRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Add
+          schema:
+            allOf:
+            - $ref: '#/definitions/controllers.BaseResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.PublisherResponse'
+              type: object
+      summary: AddPublisher publisher
+      tags:
+      - publishers
+  /reservation/add:
+    post:
+      consumes:
+      - application/json
+      description: AddReservation reservation
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.AddReservationRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Add
+          schema:
+            allOf:
+            - $ref: '#/definitions/controllers.BaseResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.ReservationResponse'
+              type: object
+      summary: AddReservation reservation
+      tags:
+      - reservations
+  /user/register:
+    post:
+      consumes:
+      - application/json
+      description: RegisterUser user
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/request.RegisterUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Register
+          schema:
+            allOf:
+            - $ref: '#/definitions/controllers.BaseResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/response.UserResponse'
+              type: object
+      summary: RegisterUser user
+      tags:
+      - users
 swagger: "2.0"

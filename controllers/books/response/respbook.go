@@ -4,6 +4,8 @@ import (
 	"time"
 
 	"github.com/iskandardevan/book-library/business/books"
+	respAuth "github.com/iskandardevan/book-library/controllers/authors/response"
+	respPub "github.com/iskandardevan/book-library/controllers/publishers/response"
 	"gorm.io/gorm"
 )
 
@@ -12,8 +14,10 @@ type BookResponse struct {
 	Title            string         `json:"title"`
 	Edition          int            `json:"edition"`
 	Author_ID        uint           `json:"author_id"`
+	Author			 respAuth.AuthorResponse
 	Publisher_ID     uint           `json:"publisher_id"`
-	Publication_Year string     `json:"publication_year"`
+	Publisher		 respPub.PublisherResponse
+	Publication_Year string     	`json:"publication_year"`
 	CreatedAt        time.Time      `json:"createdAt"`
 	UpdatedAt        time.Time      `json:"updatedAt"`
 	DeletedAt        gorm.DeletedAt `json:"deletedAt"`
@@ -22,11 +26,13 @@ type BookResponse struct {
 func FromDomainBook(domain books.Domain) BookResponse {
 	return BookResponse{
 		Id					:domain.Id,
-		Title				:domain.Title,
-		Edition				:domain.Edition,
+		Title            	:domain.Title,
+		Edition          	:domain.Edition,
 		Author_ID			:domain.Author_ID,
+		Author				:respAuth.FromDomainAuthor(domain.Author) ,
 		Publisher_ID		:domain.Publisher_ID,
-		Publication_Year	:domain.Publication_Year,
+		Publisher			:respPub.FromDomainPublisher(domain.Publisher) ,
+		Publication_Year 	:domain.Publication_Year,
 		CreatedAt			:domain.CreatedAt,
 		UpdatedAt			:domain.UpdatedAt,
 	}

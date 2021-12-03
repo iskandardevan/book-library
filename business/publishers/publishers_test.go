@@ -16,6 +16,8 @@ var publisherRepository = mocks.Repository{Mock:mock.Mock{}}
 var publisherService publishers.PublishersUsecaseInterface
 var publisherDomain publishers.Domain
 
+var allpublisherDomain []publishers.Domain
+
 func setup() {
 	publisherService = publishers.NewUseCase(&publisherRepository, time.Hour*10)
 	publisherDomain = publishers.Domain{
@@ -98,5 +100,45 @@ func TestAdd(t *testing.T) {
 		})
 		assert.Error(t, err)
 		assert.NotNil(t, publisher)
+	})
+}
+
+func TestGetAll(t *testing.T) {
+	t.Run("Test case 1 | Success Search publisher", func(t *testing.T) {
+        setup()
+        publisherRepository.On("GetAllPublishers", mock.Anything).Return(allpublisherDomain, nil).Once()
+        data, err := publisherService.GetAllPublishers(context.Background())
+
+        assert.NoError(t, err)
+        assert.Nil(t, data)
+        assert.Equal(t, len(data), len(allpublisherDomain))
+    })
+
+    t.Run("Test case 2 | Error Search publisher(search empty)", func(t *testing.T) {
+        setup()
+        publisherRepository.On("GetAllPublishers", mock.Anything, mock.Anything).Return([]publishers.Domain{}, errors.New("tidak ada publisher")).Once()
+        data, err := publisherService.GetAllPublishers(context.Background())
+
+        assert.Error(t, err)
+        assert.Equal(t, data, []publishers.Domain{})
+    })
+}
+
+func TestDelete(t *testing.T) {
+	t.Run("Test case 1 | Success Delete", func(t *testing.T) {
+		setup()
+		publisherRepository.On("Delete", mock.Anything, mock.Anything).Return(nil).Once()
+		err := publisherService.Delete(publisherDomain.Id, context.Background() )
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("Test case 2 | Failed Delete", func(t *testing.T) {
+		setup()
+		publisherRepository.On("Delete", mock.Anything, mock.Anything).Return(errors.New("tidak ada publisher dengan ID tersebut")).Once()
+		err := publisherService.Delete(publisherDomain.Id, context.Background())
+
+		assert.Equal(t, err, errors.New("tidak ada publisher dengan ID tersebut"))
+		assert.Error(t, err)
 	})
 }

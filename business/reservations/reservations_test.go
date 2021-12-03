@@ -100,3 +100,22 @@ func TestGetAll(t *testing.T) {
         assert.Equal(t, data, []reservations.Domain{})
     })
 }
+
+func TestDelete(t *testing.T) {
+	t.Run("Test case 1 | Success Delete", func(t *testing.T) {
+		setup()
+		reservationRepository.On("Delete", mock.Anything, mock.Anything).Return(nil).Once()
+		err := reservationService.Delete(reservationDomain.Id, context.Background() )
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("Test case 2 | Failed Delete", func(t *testing.T) {
+		setup()
+		reservationRepository.On("Delete", mock.Anything, mock.Anything).Return(errors.New("tidak ada reservation dengan ID tersebut")).Once()
+		err := reservationService.Delete(reservationDomain.Id, context.Background())
+
+		assert.Equal(t, err, errors.New("tidak ada Reservation dengan ID tersebut"))
+		assert.Error(t, err)
+	})
+}

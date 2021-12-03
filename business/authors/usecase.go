@@ -42,3 +42,19 @@ func (usecase *AuthorUseCase) AddAuthor(ctx context.Context, domain Domain) (Dom
 
 	return author, nil
 }
+
+func (usecase *AuthorUseCase) GetAllAuthors(ctx context.Context) ([]Domain, error) {
+	author, err := usecase.repo.GetAllAuthors(ctx)
+	if err != nil {
+		return []Domain{}, errors.New("tidak ada buku")
+	}
+	return author, nil
+}
+
+func (usecase *AuthorUseCase) Delete(id uint, ctx context.Context) error{
+	err := usecase.repo.Delete(id, ctx)
+	if err != nil {
+		return errors.New("tidak ada Author dengan ID tersebut")
+	}
+	return nil
+}

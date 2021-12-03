@@ -16,6 +16,8 @@ var authorRepository = mocks.Repository{Mock:mock.Mock{}}
 var authorService authors.AuthorUsecaseInterface
 var authorDomain authors.Domain
 
+var allauthorDomain []authors.Domain
+
 func setup(){
 	authorService = authors.NewUseCase(&authorRepository, time.Hour*10)
 	authorDomain = authors.Domain{
@@ -118,5 +120,45 @@ func TestAdd(t *testing.T) {
 		})
 		assert.Error(t, err)
 		assert.NotNil(t, author)
+	})
+}
+
+func TestGetAll(t *testing.T) {
+	t.Run("Test case 1 | Success Search author", func(t *testing.T) {
+        setup()
+        authorRepository.On("GetAllAuthors", mock.Anything).Return(allauthorDomain, nil).Once()
+        data, err := authorService.GetAllAuthors(context.Background())
+
+        assert.NoError(t, err)
+        assert.Nil(t, data)
+        assert.Equal(t, len(data), len(allauthorDomain))
+    })
+
+    t.Run("Test case 2 | Error Search author(search empty)", func(t *testing.T) {
+        setup()
+        authorRepository.On("GetAllAuthors", mock.Anything, mock.Anything).Return([]authors.Domain{}, errors.New("author Not Found")).Once()
+        data, err := authorService.GetAllAuthors(context.Background())
+
+        assert.Error(t, err)
+        assert.Equal(t, data, []authors.Domain{})
+    })
+}
+
+func TestDelete(t *testing.T) {
+	t.Run("Test case 1 | Success Delete", func(t *testing.T) {
+		setup()
+		authorRepository.On("Delete", mock.Anything, mock.Anything).Return(nil).Once()
+		err := authorService.Delete(authorDomain.Id, context.Background() )
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("Test case 2 | Failed Delete", func(t *testing.T) {
+		setup()
+		authorRepository.On("Delete", mock.Anything, mock.Anything).Return(errors.New("tidak ada Author dengan ID tersebut")).Once()
+		err := authorService.Delete(authorDomain.Id, context.Background())
+
+		assert.Equal(t, err, errors.New("tidak ada Author dengan ID tersebut"))
+		assert.Error(t, err)
 	})
 }

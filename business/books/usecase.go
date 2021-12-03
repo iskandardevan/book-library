@@ -43,3 +43,11 @@ func (usecase *BookUseCase) GetAllBooks(ctx context.Context) ([]Domain, error) {
 	}
 	return book, nil
 }
+
+func (usecase *BookUseCase) Delete(id uint, ctx context.Context) error{
+	err := usecase.repo.Delete(id, ctx)
+	if err != nil {
+		return errors.New("tidak ada Book dengan ID tersebut")
+	}
+	return nil
+}

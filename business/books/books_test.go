@@ -118,3 +118,22 @@ func TestGetAll(t *testing.T) {
         assert.Equal(t, data, []books.Domain{})
     })
 }
+
+func TestDelete(t *testing.T) {
+	t.Run("Test case 1 | Success Delete", func(t *testing.T) {
+		setup()
+		bookRepository.On("Delete", mock.Anything, mock.Anything).Return(nil).Once()
+		err := bookService.Delete(bookDomain.Id, context.Background() )
+
+		assert.Nil(t, err)
+	})
+
+	t.Run("Test case 2 | Failed Delete", func(t *testing.T) {
+		setup()
+		bookRepository.On("Delete", mock.Anything, mock.Anything).Return(errors.New("tidak ada Book dengan ID tersebut")).Once()
+		err := bookService.Delete(bookDomain.Id, context.Background())
+
+		assert.Equal(t, err, errors.New("tidak ada Book dengan ID tersebut"))
+		assert.Error(t, err)
+	})
+}

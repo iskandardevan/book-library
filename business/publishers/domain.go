@@ -20,8 +20,12 @@ type Domain struct {
 
 type PublishersUsecaseInterface interface {
 	AddPublisher(ctx context.Context, domain Domain) (Domain, error)
+	GetAllPublishers(ctx context.Context) ([]Domain, error)
+	Delete(id uint, ctx context.Context)error
 }
 
 type PublishersRepoInterface interface {
 	AddPublisher(ctx context.Context, domain Domain) (Domain, error)
+	GetAllPublishers(ctx context.Context) ([]Domain, error)
+	Delete(id uint, ctx context.Context)error
 }
