@@ -43,7 +43,7 @@ jobs:
           SSH USER: ${{ secrets.SSH_USERNAME }}
           SSH_KEY: ${{ secrets.BOOK_LIBRARY }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
-        run: 
+        run: |
           mkdir -p ~/.ssh/
           echo "$SSH_KEY" > ~/.ssh/book-library.pem
           chmod 700 ~/.ssh/book-library.pem
