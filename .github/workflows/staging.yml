@@ -40,7 +40,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: configuration ssh
         env :
-          SSH USER: ${{ secrets.SSH_USERNAME }}
+          SSH_USER: ${{ secrets.SSH_USERNAME }}
           SSH_KEY: ${{ secrets.BOOK_LIBRARY }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
         run: |
@@ -51,7 +51,7 @@ jobs:
           Host development
             HostName $SSH_HOST
             User $SSH_USER
-            identifyFile ~/.ssh/book-library.pem
+            identityFile ~/.ssh/book-library.pem
             StrictHostKeyChecking=no
           END
       - name: connect ec2, remove container, pull from registry, end start
