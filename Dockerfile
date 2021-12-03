@@ -1,14 +1,14 @@
 #stageI (Build Binary)
 FROM golang:1.17.2-alpine3.14 AS builder
 WORKDIR /app
-COPY . .
+COPY ./ ./ ./
 RUN ls
 RUN go mod download
 RUN go build -o main 
 
 #stageII
 FROM alpine:3.14
-WORKDIR /app
+WORKDIR /root/
 COPY --from=builder ./app/app/config.json .
 COPY --from=builder ./app/main .
 EXPOSE 8080
